@@ -485,7 +485,7 @@
         <div class="constelacoes-wrapper">
 
             <!-- ===================== AQUÁRIO ===================== -->
-            <a href="aquario.html" class="lado lado-aquario">
+            <div class="lado lado-aquario" data-destino="aquario.html" data-estrela="Aquário">
                 <div class="lado-conteudo">
                     <div class="simbolo-wrapper">
                         <span class="particula" style="top:5%;left:10%;width:3px;height:3px;"></span>
@@ -513,13 +513,13 @@
                     <span class="linha-decorativa"></span>
                     <span class="lado-status">✦ Disponível ✦</span>
                 </div>
-            </a>
+            </div>
 
             <!-- ===================== DIVISÓRIA ===================== -->
             <div class="divisoria"></div>
 
             <!-- ===================== LEÃO ===================== -->
-            <a href="leao.html" class="lado lado-leao">
+            <div class="lado lado-leao" data-destino="leao.html" data-estrela="Leão">
                 <div class="lado-conteudo">
                     <div class="simbolo-wrapper">
                         <span class="particula" style="top:8%;right:12%;width:2px;height:2px;"></span>
@@ -550,13 +550,16 @@
                     <span class="linha-decorativa"></span>
                     <span class="lado-status">◈ Em breve ◈</span>
                 </div>
-            </a>
+            </div>
 
         </div>
 
     </div>
 
     <script>
+        // ============================================================
+        // ESTRELAS CADENTES
+        // ============================================================
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let W, H;
@@ -648,6 +651,9 @@
         }
         drawStars();
 
+        // ============================================================
+        // MÚSICA DE FUNDO
+        // ============================================================
         const musicBtn = document.getElementById('musicBtn');
         let audioFundo = null;
         let isPlayingFundo = false;
@@ -685,7 +691,154 @@
             }
         }, { once: true });
 
+        // ============================================================
+        // ANIMAÇÃO DE VIAGEM PARA AS CONSTELAÇÕES
+        // ============================================================
+        const botoesViagem = document.querySelectorAll('.lado');
+
+        botoesViagem.forEach(botao => {
+            botao.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const destino = this.dataset.destino;
+                const nomeEstrela = this.dataset.estrela;
+
+                // Cria overlay
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: #0a0a0f;
+                    z-index: 9999;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                    transition: opacity 0.5s ease;
+                    opacity: 0;
+                `;
+                document.body.appendChild(overlay);
+
+                // Canvas para o túnel
+                const tunnelStars = document.createElement('canvas');
+                tunnelStars.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                `;
+                overlay.appendChild(tunnelStars);
+
+                // Texto da estrela que aparece no meio da viagem
+                const starName = document.createElement('div');
+                starName.style.cssText = `
+                    position: absolute;
+                    color: ${nomeEstrela === 'Aquário' ? '#7a9cff' : '#ffaa44'};
+                    font-family: 'Cinzel', serif;
+                    font-size: 3rem;
+                    text-shadow: 0 0 60px ${nomeEstrela === 'Aquário' ? 'rgba(122, 156, 255, 0.5)' : 'rgba(255, 170, 68, 0.5)'};
+                    opacity: 0;
+                    transition: opacity 1s ease;
+                    z-index: 10;
+                    letter-spacing: 0.2em;
+                `;
+                starName.textContent = `✦ ${nomeEstrela} ✦`;
+                overlay.appendChild(starName);
+
+                // Inicia a animação
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                }, 50);
+
+                const tCtx = tunnelStars.getContext('2d');
+                let tW, tH;
+
+                function resizeTunnel() {
+                    tW = tunnelStars.width = window.innerWidth;
+                    tH = tunnelStars.height = window.innerHeight;
+                }
+                resizeTunnel();
+                window.addEventListener('resize', resizeTunnel);
+
+                // Cria as estrelas do túnel
+                const starTunnel = [];
+                const corDestaque = nomeEstrela === 'Aquário' ? '#7a9cff' : '#ffaa44';
+                for (let i = 0; i < 300; i++) {
+                    starTunnel.push({
+                        x: (Math.random() - 0.5) * tW * 2,
+                        y: (Math.random() - 0.5) * tH * 2,
+                        z: Math.random() * 1000,
+                        speed: 5 + Math.random() * 8,
+                        size: Math.random() * 3 + 0.5,
+                        color: Math.random() > 0.7 ? corDestaque : '#ffffff'
+                    });
+                }
+
+                let frame = 0;
+                const totalFrames = 120;
+
+                function drawTunnel() {
+                    tCtx.clearRect(0, 0, tW, tH);
+
+                    const centerX = tW / 2;
+                    const centerY = tH / 2;
+
+                    starTunnel.forEach(s => {
+                        s.z -= s.speed;
+
+                        if (s.z <= 0) {
+                            s.z = 1000;
+                            s.x = (Math.random() - 0.5) * tW * 2;
+                            s.y = (Math.random() - 0.5) * tH * 2;
+                        }
+
+                        const scale = 800 / s.z;
+                        const x = centerX + s.x * scale;
+                        const y = centerY + s.y * scale;
+                        const size = s.size * scale;
+
+                        if (x > -50 && x < tW + 50 && y > -50 && y < tH + 50) {
+                            const alpha = Math.min(1, 1 - (s.z / 1000));
+                            tCtx.beginPath();
+                            tCtx.arc(x, y, Math.max(0.5, size), 0, Math.PI * 2);
+                            tCtx.fillStyle = s.color;
+                            tCtx.globalAlpha = alpha * 0.9;
+                            tCtx.fill();
+                            tCtx.globalAlpha = 1;
+                        }
+                    });
+
+                    frame++;
+
+                    // Mostra o nome da estrela no meio da viagem
+                    if (frame > 40 && frame < 80) {
+                        starName.style.opacity = Math.min(1, (frame - 40) / 15);
+                        starName.style.transform = `scale(${1 + (frame - 40) * 0.008})`;
+                    } else if (frame >= 80) {
+                        starName.style.opacity = Math.max(0, 1 - (frame - 80) / 15);
+                    }
+
+                    if (frame < totalFrames) {
+                        requestAnimationFrame(drawTunnel);
+                    } else {
+                        overlay.style.opacity = '0';
+                        setTimeout(() => {
+                            window.location.href = destino;
+                        }, 600);
+                    }
+                }
+
+                drawTunnel();
+            });
+        });
+
         console.log('🌌 Constelações — página inicial carregada.');
+        console.log('🚀 Clique em qualquer constelação para uma viagem interestelar!');
     </script>
+
 </body>
 </html>
