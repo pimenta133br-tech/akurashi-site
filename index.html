@@ -748,7 +748,7 @@
         }, { once: true });
 
         // ============================================================
-        // ANIMAÇÃO DE VIAGEM PARA AS CONSTELAÇÕES
+        // ANIMAÇÃO DE VIAGEM PARA AS CONSTELAÇÕES (CORRIGIDA)
         // ============================================================
         const botoesViagem = document.querySelectorAll('.lado');
 
@@ -887,10 +887,8 @@
                     if (frame < totalFrames) {
                         requestAnimationFrame(drawTunnel);
                     } else {
-                        overlay.style.opacity = '0';
-                        setTimeout(() => {
-                            window.location.href = destino;
-                        }, 600);
+                        // Mantém a tela preta e redireciona sem delay
+                        window.location.href = destino;
                     }
                 }
 
@@ -901,6 +899,7 @@
         console.log('🌌 Constelações — página inicial carregada.');
         console.log('🚀 Clique em qualquer constelação para uma viagem interestelar!');
         console.log('♋ Câncer adicionado!');
+        console.log('✨ Transição corrigida — sem piscar no final.');
     </script>
 
 </body>
