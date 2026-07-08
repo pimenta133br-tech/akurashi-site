@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maré — Câncer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0f;
+            color: #e0d6c8;
+            font-family: 'Lora', serif;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        #stars-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: clamp(2.8rem, 10vw, 5.5rem);
+            color: #66cc99;
+            text-shadow: 0 0 40px rgba(102, 204, 153, 0.25);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: #b8aed0;
+            font-style: italic;
+            max-width: 700px;
+            border-top: 1px solid rgba(180, 150, 200, 0.15);
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .hero .subtitle strong {
+            color: #66cc99;
+            font-style: normal;
+        }
+
+        section {
+            margin: 4rem 0;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(180, 150, 200, 0.06);
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: #66cc99;
+            letter-spacing: 0.05em;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        h2::after {
+            content: ' ✦';
+            color: #b8aed0;
+            font-size: 1.2rem;
+        }
+
+        .perfil-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 700px) {
+            .perfil-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        .perfil-card {
+            background: rgba(20, 15, 30, 0.6);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            border-left: 3px solid #66cc99;
+        }
+
+        .perfil-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: #66cc99;
+            margin-bottom: 0.5rem;
+        }
+
+        .perfil-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .perfil-card li {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid rgba(180, 150, 200, 0.05);
+        }
+        .perfil-card li:last-child {
+            border-bottom: none;
+        }
+
+        .perfil-card .destaque {
+            color: #66cc99;
+            font-weight: 700;
+        }
+
+        .imagem-destaque {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .texto-justificado p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        .citacao {
+            font-style: italic;
+            color: #b8aed0;
+            text-align: center;
+            padding: 1.5rem 0;
+            border-top: 1px solid rgba(180, 150, 200, 0.08);
+            border-bottom: 1px solid rgba(180, 150, 200, 0.08);
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+
+        .citacao strong {
+            color: #66cc99;
+            font-style: normal;
+        }
+
+        .btn-voltar {
+            display: inline-block;
+            margin-top: 2.5rem;
+            padding: 0.8rem 2.5rem;
+            background: rgba(102, 204, 153, 0.08);
+            border: 1px solid rgba(102, 204, 153, 0.15);
+            border-radius: 30px;
+            color: #66cc99;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-voltar:hover {
+            background: rgba(102, 204, 153, 0.15);
+            border-color: #66cc99;
+            color: #f0e6d0;
+        }
+
+        .footer-simbolo {
+            text-align: center;
+            font-size: 1.2rem;
+            letter-spacing: 0.2em;
+            color: #4a3f5a;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(180, 150, 200, 0.06);
+        }
+
+        .music-control {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 10;
+            background: rgba(20, 15, 30, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(180, 150, 200, 0.15);
+            color: #d4c8e8;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .music-control:hover {
+            background: rgba(40, 30, 60, 0.9);
+            border-color: #b8aed0;
+            transform: scale(1.08);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(25px);
+            animation: fadeUp 1s ease forwards;
+        }
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .delay-1 {
+            animation-delay: 0.15s;
+        }
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+        .delay-3 {
+            animation-delay: 0.7s;
+        }
+        .delay-4 {
+            animation-delay: 1s;
+        }
+
+        .capitulo-card {
+            background: rgba(10, 8, 18, 0.5);
+            border-radius: 16px;
+            border: 1px solid rgba(180, 150, 200, 0.06);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: border-color 0.4s ease;
+            cursor: pointer;
+        }
+        .capitulo-card:hover {
+            border-color: rgba(180, 150, 200, 0.2);
+        }
+
+        .capitulo-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 1.5rem;
+            align-items: center;
+        }
+        @media (max-width: 700px) {
+            .capitulo-header {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 1.2rem;
+            }
+        }
+
+        .capitulo-header img {
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .capitulo-header h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: #d4c8e8;
+            margin-bottom: 0.5rem;
+        }
+        .capitulo-header blockquote {
+            font-style: italic;
+            color: #b8aed0;
+            border-left: 3px solid #66cc99;
+            padding-left: 1.2rem;
+            font-size: 0.95rem;
+        }
+        .capitulo-header .abrir-indicador {
+            display: inline-block;
+            margin-top: 0.8rem;
+            font-size: 0.8rem;
+            color: #6a5f7a;
+            letter-spacing: 0.1em;
+        }
+
+        .capitulo-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding 0.4s ease;
+            padding: 0 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid transparent;
+        }
+        .capitulo-body.aberto {
+            max-height: 8000px;
+            padding: 2rem 1.5rem;
+            border-top-color: rgba(180, 150, 200, 0.08);
+        }
+
+        .capitulo-body .texto {
+            text-align: justify;
+            margin-bottom: 1.5rem;
+        }
+        .capitulo-body .texto p {
+            margin-bottom: 1rem;
+        }
+
+        .capitulo-body .imagem-destaque {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-proximo {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.6rem 2rem;
+            background: rgba(180, 150, 200, 0.08);
+            border: 1px solid rgba(180, 150, 200, 0.15);
+            border-radius: 30px;
+            color: #b8aed0;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: none;
+        }
+        .btn-proximo:hover {
+            background: rgba(180, 150, 200, 0.15);
+            border-color: #b8aed0;
+            color: #f0e6d0;
+        }
+        .btn-proximo.fim {
+            opacity: 0.5;
+            cursor: default;
+        }
+        .btn-proximo.fim:hover {
+            background: rgba(180, 150, 200, 0.08);
+            border-color: rgba(180, 150, 200, 0.15);
+            color: #b8aed0;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="stars-canvas"></canvas>
+
+    <button class="music-control" id="musicBtn" aria-label="Controle de música">🔊</button>
+
+    <div class="container">
+
+        <!-- ===================== HERO ===================== -->
+        <header class="hero fade-in">
+            <h1>♋ Maré</h1>
+            <p class="subtitle">
+                <strong>"A maior força não está em lutar, mas em permanecer gentil."</strong>
+            </p>
+        </header>
+
+        <!-- ===================== PERFIL ===================== -->
+        <section class="fade-in delay-1">
+            <h2>Perfil</h2>
+            <div class="perfil-grid">
+                <div class="perfil-card">
+                    <h3>Físico</h3>
+                    <ul>
+                        <li><span class="destaque">Pele:</span> Cinza</li>
+                        <li><span class="destaque">Cabelos:</span> Azul Acinzentado</li>
+                        <li><span class="destaque">Olhos:</span> Azul Claro e outro apagado</li>
+                        <li><span class="destaque">Vestimenta:</span> Calça larga e colete simples</li>
+                        <li><span class="destaque">Marca:</span> Cicatriz na região do olho (queimadura)</li>
+                        <li><span class="destaque">Tapa Olho:</span> Presente de um amigo</li>
+                        <li><span class="destaque">Lamparina:</span> Objeto misterioso que carrega desde criança</li>
+                    </ul>
+                </div>
+                <div class="perfil-card">
+                    <h3>Personalidade</h3>
+                    <ul>
+                        <li>Calmo e gentil</li>
+                        <li>Cuidadoso e sensível</li>
+                        <li>Fobia: Pirofobia (medo de fogo)</li>
+                        <li>Gosta de contato físico e música de piratas</li>
+                        <li>Odeia pessoas grossas</li>
+                        <li>Fechado com estranhos (medo de se machucar)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+           CAPÍTULO I
+        ============================================================ -->
+        <section class="fade-in delay-2">
+            <h2>Capítulos</h2>
+
+            <div class="capitulo-card" id="capitulo1">
+                <div class="capitulo-header">
+                    <img src="cancer_cap1.png" alt="Capítulo I" class="imagem-destaque" onerror="this.style.display='none'" />
+                    <div>
+                        <h3>Capítulo I — As Crianças das Creches</h3>
+                        <blockquote>"Toda criança nasce duas vezes: quando abre os olhos para o mundo e quando encontra um lugar para chamar de lar."</blockquote>
+                        <span class="abrir-indicador">▼ Clique para ler</span>
+                    </div>
+                </div>
+                <div class="capitulo-body" id="body1">
+                    <div class="texto">
+                        <p>Antes de ser conhecido como Maré, antes de carregar uma bandeira pelos oceanos e reunir pessoas diferentes ao seu redor, ele era apenas Mateo. Sua história não começou em um navio nem diante de uma grande aventura, mas nos braços de uma mãe que precisou tomar a decisão mais difícil da própria vida.</p>
+                        <p>Ela nunca deixou de amar o filho. Pelo contrário: foi justamente por amá-lo que escolheu entregá-lo aos cuidados de uma pequena creche construída em uma ilha costeira. A pobreza consumia seus dias, e cada amanhecer trazia uma nova incerteza. Ela podia oferecer carinho, abraços e palavras de conforto, mas não conseguia garantir comida, segurança ou um futuro digno.</p>
+                        <p>Na manhã da despedida, caminhou até a ilha enquanto o vento trazia o cheiro salgado do mar. Mateo, com pouco mais de um ano, observava o céu e segurava com curiosidade uma antiga lamparina que sua mãe colocara em suas mãos. O objeto era simples, gasto pelo tempo, mas parecia transmitir um calor estranho e acolhedor.</p>
+                        <p>A creche era modesta. Suas paredes de madeira carregavam marcas da maresia, e o piso rangia sob os passos das crianças que corriam pelo pátio. Ainda assim, havia vida em todos os cantos: o cheiro de pão recém-assado saía da cozinha, um grupo de pequenos Undynes brincava próximo ao poço, duas crianças Aetherions disputavam quem conseguia voar por mais tempo, enquanto uma menina Sylven regava cuidadosamente um jardim cheio de flores coloridas.</p>
+                        <p>Quando a porta se abriu, uma das cuidadoras recebeu os dois com um sorriso sereno. A mãe de Mateo demorou a soltá-lo. Apertou suas pequenas mãos, ajeitou seus cabelos e, contendo as lágrimas, apenas sussurrou:</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você merece um mundo melhor do que eu posso lhe dar.</p>
+                        <p>Ela entregou o filho, mas não o abandonou por falta de amor. Deixou com ele a lamparina, um último pedaço de si mesma, e partiu sem olhar para trás, porque sabia que, se olhasse mais uma vez, nunca teria forças para ir embora.</p>
+                        <p>Mateo chorou naquela primeira noite. Chorou até adormecer abraçado à lamparina, enquanto o som das ondas atravessava a janela do dormitório. Sem perceber, o oceano já começava a embalar a vida do menino que um dia seria conhecido em inúmeros mares.</p>
+
+                        <img src="cancer_cap1_2.png" alt="Mateo e a lamparina" class="imagem-destaque" onerror="this.style.display='none'" />
+
+                        <p>Os anos passaram lentamente, como marés que avançam e recuam sem pressa. Mateo cresceu dentro daquela creche ao lado de crianças de diferentes raças e histórias. Havia Undynes que conseguiam prender a respiração por tempo demais, Aetherions que passavam tardes inteiras tentando voar mais alto, Sylvens que conversavam com plantas como se fossem velhas amigas e até alguns Ignyx que viviam chamuscando a própria roupa durante brincadeiras.</p>
+                        <p>Ele, porém, era diferente. Não fazia barulho, não corria sem motivo e raramente começava uma conversa. Preferia sentar perto da cerca voltada para o mar, segurando a lamparina enquanto observava navios cruzarem o horizonte. As cuidadoras diziam que parecia estar sempre ouvindo algo distante.</p>
+                        <p>Foi numa tarde comum que Jun apareceu.</p>
+                        <p>O garoto meio axolote surgiu correndo pelo pátio depois de perder uma corrida para duas crianças Aetherions. Parou ofegante diante de Mateo e ficou encarando o oceano por alguns segundos antes de perguntar:</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você também acha que o mar parece chamar a gente?</p>
+                        <p>Mateo demorou um pouco para responder.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Acho.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Ótimo. Então não sou maluco sozinho.</p>
+                        <p>Jun sentou ao lado dele sem pedir permissão e apontou para a lamparina.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você leva isso pra todo lugar.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Ela é importante.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Por quê?</p>
+                        <p>Mateo olhou para o objeto nas próprias mãos.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Não sei explicar.</p>
+                        <p>Jun sorriu.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então deve ser importante de verdade.</p>
+                        <p>A partir daquele dia, os dois passaram a dividir quase tudo. Exploravam a praia depois das tarefas, ouviam histórias de piratas contadas por um velho cozinheiro da creche e construíam pequenos barcos de madeira que quase nunca conseguiam flutuar direito. Enquanto as outras crianças sonhavam em se tornar mercadores, soldados ou aventureiros, Mateo e Jun sonhavam em navegar.</p>
+                        <p>Mas o sonho deles era diferente.</p>
+                        <p>Não queriam apenas riquezas.</p>
+                        <p>Queriam uma família.</p>
+                        <p>Numa noite em que o céu estava cheio de estrelas, os dois permaneceram sentados na areia observando o mar escuro.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Quando eu tiver um navio, ninguém vai ser rejeitado por causa da raça — disse Mateo.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Nem por causa do passado — completou Jun.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— E ninguém vai ficar sozinho.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então já temos uma tripulação.</p>
+                        <p>Mateo riu.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Só tem nós dois.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Toda família começa pequena.</p>
+                        <p>Os anos transformaram crianças em jovens. Aos dezoito anos, a creche parecia menor do que antes, embora continuasse carregando o mesmo cheiro de pão fresco e maresia. As cuidadoras observavam os rapazes arrumando mochilas e cordas enquanto tentavam esconder a tristeza da despedida.</p>
+                        <p>O navio que conseguiram era velho, cheio de reparos improvisados e velas desgastadas, mas para eles parecia a embarcação mais bonita do mundo. Mateo escolheu o nome: Come & Gulp.</p>
+                        <p>No cais, antes de embarcar, a mulher que o acolhera quando bebê segurou seu rosto entre as mãos.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você cresceu bem, Mateo.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Foi porque nunca estive sozinho.</p>
+                        <p>Jun apareceu carregando uma pilha de caixas e gritou do convés:</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Capitão! Se continuar se despedindo desse jeito, vamos perder a maré!</p>
+                        <p>Mateo olhou para a creche uma última vez. O jardim continuava florido, as janelas continuavam rangendo com o vento e o som das crianças ainda ecoava pelo pátio. Aquele lugar havia sido seu primeiro lar.</p>
+                        <p>Ele segurou a lamparina, respirou fundo e subiu a prancha do navio.</p>
+                        <p>Quando o Come & Gulp deixou o porto, o sol começava a nascer sobre o oceano. Mateo permaneceu na proa enquanto o vento agitava seus cabelos, e Jun ficou ao seu lado com o mesmo sorriso de sempre.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então, capitão... pra onde vamos?</p>
+                        <p>Mateo observou o horizonte.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Pra casa.</p>
+                        <p>Jun franziu a testa.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Mas a gente acabou de sair dela.</p>
+                        <p>Mateo sorriu pela primeira vez desde a despedida.</p>
+                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">— Não. A gente acabou de começar a construir outra.</p>
+                        <p style="text-align: center; color: #66cc99; font-size: 1.3rem; margin-top: 1rem;">E assim nasceram os Filhos das Marés.</p>
+                    </div>
+                    <button class="btn-proximo" onclick="abrirCapitulo('capitulo2')">Próximo Capítulo →</button>
+                </div>
+            </div>
+
+            <!-- ============================================================
+               CAPÍTULO II
+            ============================================================ -->
+            <div class="capitulo-card" id="capitulo2">
+                <div class="capitulo-header">
+                    <img src="cancer_cap2.png" alt="Capítulo II" class="imagem-destaque" onerror="this.style.display='none'" />
+                    <div>
+                        <h3>Capítulo II — O Capitão e sua Tripulação</h3>
+                        <blockquote>"O oceano não escolhe quem merece navegar. Apenas revela quem permanece de pé quando as ondas tentam levá-lo embora."</blockquote>
+                        <span class="abrir-indicador">▼ Clique para ler</span>
+                    </div>
+                </div>
+                <div class="capitulo-body" id="body2">
+                    <div class="texto">
+                        <p>Os primeiros meses no mar foram tudo, menos fáceis. O Come & Gulp era um navio antigo, comprado com economias reunidas durante anos pelas crianças da creche. Rangia a cada onda mais forte, deixava entrar água por pequenas frestas e obrigava sua tripulação a fazer reparos constantemente. Ainda assim, para Mateo e seus amigos, não existia embarcação mais bonita em todo o oceano.</p>
+                        <p>Ali, pela primeira vez, eles eram livres.</p>
+                        <p>A tripulação passou a ser conhecida como Filhos das Marés. Não eram famosos por sua força, nem pela quantidade de ouro que possuíam, mas pela maneira como navegavam. Enquanto outros piratas saqueavam qualquer embarcação que encontravam, Mateo havia criado três regras simples que jamais poderiam ser quebradas.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">Primeira: nunca roubar um irmão. Aquilo que um membro da tripulação conquistasse lhe pertenceria, a menos que decidisse compartilhar.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">Segunda: jamais tirar a vida de um inocente. Apenas criminosos ou aqueles que ameaçassem a vida de alguém responderiam por seus atos, principalmente aqueles que machucassem crianças.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">Terceira: fossem felizes.</p>
+                        <p>Muitos riam daquela última regra, dizendo que não fazia sentido existir em um bando pirata. Mateo apenas respondia que um navio cheio de pessoas infelizes nunca poderia ser chamado de família.</p>
+                        <p>Os dias passaram a ser preenchidos por aventuras que nenhum deles imaginava viver. Navegaram entre ilhas escondidas, descobriram praias onde a areia brilhava sob a luz da lua, atravessaram tempestades violentas e conheceram povos de todas as raças. Em algumas cidades, eram recebidos com comida e música; em outras, precisavam fugir antes mesmo de colocar os pés em terra.</p>
+
+                        <img src="cancer_cap2_2.png" alt="Os Filhos das Marés" class="imagem-destaque" onerror="this.style.display='none'" />
+
+                        <p>Quando roubavam, escolhiam sempre seus alvos com cuidado. Mercadores corruptos, nobres que enriqueciam explorando seus povos e piratas conhecidos por espalhar violência eram os únicos que despertavam o interesse dos Filhos das Marés. Muitas vezes, parte do ouro roubado era deixada anonimamente em pequenos vilarejos que passavam fome. Para Mateo, um capitão deveria proteger quem não podia se defender sozinho.</p>
+                        <p>Nem todos os encontros com outros piratas terminavam em batalha. Sempre que avistavam uma bandeira desconhecida no horizonte, o Come & Gulp diminuía a velocidade. Se o outro navio também demonstrasse paz, as embarcações aproximavam-se lado a lado. Violões, tambores e flautas surgiam rapidamente, e a noite era tomada por músicas, histórias exageradas e competições sobre quem havia vivido a aventura mais absurda. Mateo adorava aqueles encontros. Dizia que o mar era grande demais para ser preenchido apenas por ódio.</p>
+                        <p>Ao seu lado, Jun permanecia como o braço direito que qualquer capitão sonharia ter. Enquanto Mateo era calmo e refletia antes de agir, Jun era expansivo, fazia amizade com qualquer pessoa em poucos minutos e arrancava risadas até dos marinheiros mais sérios. Muitas vezes, bastava um olhar para que um entendesse exatamente o que o outro estava pensando.</p>
+                        <p>Certa noite, sentados na proa do Come & Gulp, observavam o céu coberto de estrelas.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você já percebeu? — perguntou Jun.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— O quê?</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— A gente conseguiu.</p>
+                        <p>Mateo olhou confuso.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— A família que sonhamos quando éramos crianças... ela está aqui.</p>
+                        <p>O capitão observou cada integrante do convés. Alguns jogavam cartas, outros cozinhavam, enquanto dois tripulantes discutiam quem desafinava mais ao cantar antigas canções de piratas.</p>
+                        <p>Ele sorriu.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Conseguiu você. Eu só dei o primeiro passo.</p>
+                        <p>Jun deu uma leve cotovelada em seu ombro.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Não... você deu um lar para todo mundo.</p>
+                        <p>Mateo nunca esqueceu aquelas palavras.</p>
+                        <p>Foi justamente quando acreditava que o futuro seria tranquilo que o destino resolveu provar o contrário.</p>
+                        <p>Em uma tarde de céu fechado, uma gigantesca embarcação surgiu entre a neblina. Sua bandeira negra tremulava ao vento enquanto canhões eram apontados diretamente para o Come & Gulp. Não houve conversa. O primeiro disparo atravessou uma das velas, seguido por uma chuva de flechas incendiárias.</p>
+                        <p>As chamas espalharam-se rapidamente pela madeira ressecada do navio.</p>
+                        <p>Os Filhos das Marés lutaram com tudo o que tinham. Mesmo em menor número, conseguiram enfrentar os invasores e proteger seus companheiros. Mateo avançava pela fumaça tentando apagar o incêndio quando um barril em chamas explodiu próximo ao mastro. Um pedaço de madeira atingiu violentamente seu rosto. O calor queimou parte de sua pele e seu olho esquerdo foi destruído no impacto.</p>
+                        <p>Mesmo ferido, continuou lutando.</p>
+                        <p>Jun correu até ele, retirando do bolso um velho tapa-olho de couro.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você ainda é o capitão mais bonito que eu conheço.</p>
+                        <p>Mesmo em meio ao caos, Mateo riu.</p>
+                        <p>Jun colocou o tapa-olho sobre o ferimento e sorriu.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Agora ficou melhor.</p>
+                        <p>Antes que pudesse dizer qualquer outra coisa, uma espada atravessou seu peito.</p>
+                        <p>O tempo pareceu parar.</p>
+                        <p>Atrás dele estava um homem de barba escura, olhar frio e um sorriso cruel.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então esta é a famosa família de vocês? — disse ele, empurrando o corpo de Jun ao chão. — Que família fraca.</p>
+                        <p>Mateo tentou alcançá-lo, mas o convés já não suportava o incêndio. As ondas tornaram-se violentas, como se o próprio oceano gritasse de dor. Em poucos segundos, o Come & Gulp começou a afundar, arrastando consigo também o navio inimigo.</p>
+                        <p>Mateo foi lançado contra os destroços da própria embarcação. Bateu a cabeça uma, duas, três vezes. O mundo girou diante de seus olhos. O som das ondas tornou-se distante.</p>
+                        <p>A última coisa que sentiu foi sua mão apertando instintivamente a velha lamparina que sempre carregava consigo.</p>
+                        <p>Depois disso...</p>
+                        <p style="text-align: center; color: #66cc99; font-size: 1.3rem; font-style: italic;">Apenas escuridão.</p>
+                    </div>
+                    <button class="btn-proximo" onclick="abrirCapitulo('capitulo3')">Próximo Capítulo →</button>
+                </div>
+            </div>
+
+            <!-- ============================================================
+               CAPÍTULO III
+            ============================================================ -->
+            <div class="capitulo-card" id="capitulo3">
+                <div class="capitulo-header">
+                    <img src="cancer_cap3.png" alt="Capítulo III" class="imagem-destaque" onerror="this.style.display='none'" />
+                    <div>
+                        <h3>Capítulo III — Recomeço de uma Vida</h3>
+                        <blockquote>"Nem todo recomeço nasce de uma escolha. Alguns surgem quando a vida nos obriga a aprender a existir outra vez."</blockquote>
+                        <span class="abrir-indicador">▼ Clique para ler</span>
+                    </div>
+                </div>
+                <div class="capitulo-body" id="body3">
+                    <div class="texto">
+                        <p>Quando voltou a abrir os olhos, tudo o que encontrou foi um teto branco de madeira e o som distante das ondas quebrando contra pedras. Seu corpo inteiro doía. Cada tentativa de respirar parecia despertar novas dores escondidas sob as inúmeras faixas que envolviam seus braços, peito e cabeça.</p>
+                        <p>Por alguns instantes, permaneceu imóvel, tentando entender onde estava.</p>
+                        <p>Não lembrava de seu nome.</p>
+                        <p>Não lembrava de seu rosto.</p>
+                        <p>Não lembrava de sua voz.</p>
+                        <p>Era como se alguém tivesse arrancado todas as páginas de sua história, deixando apenas um vazio impossível de preencher.</p>
+                        <p>Virou lentamente a cabeça e encontrou um pequeno espelho apoiado sobre uma mesa de madeira. O reflexo revelou um jovem de pele acinzentada, cabelos azulados e um tapa-olho cobrindo o lado esquerdo do rosto. Uma grande cicatriz queimada atravessava parte de sua face, lembrando constantemente que algo terrível havia acontecido... embora ele não soubesse o quê.</p>
+                        <p>Ao lado do espelho repousava uma velha lamparina.</p>
+                        <p>Sem pensar, ele a segurou contra o peito.</p>
+                        <p>Não sabia por quê.</p>
+                        <p>Mas, pela primeira vez desde que acordara, sentiu seu coração se acalmar.</p>
+
+                        <img src="cancer_cap3_2.png" alt="Maré e a lamparina" class="imagem-destaque" onerror="this.style.display='none'" />
+
+                        <p>A porta do quarto se abriu com rapidez.</p>
+                        <p>Uma jovem usando vestes semelhantes às de uma freira entrou apressada ao perceber que ele havia despertado. Seus cabelos castanhos possuíam pequenos tons avermelhados, e duas orelhas fofas de panda-vermelho denunciavam sua origem Sylven.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você acordou... — disse ela, sorrindo aliviada. — Graças aos Pilares...</p>
+                        <p>Ela aproximou-se devagar, verificando seus curativos antes de perguntar:</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Consegue me dizer seu nome?</p>
+                        <p>O rapaz permaneceu em silêncio.</p>
+                        <p>Depois de alguns segundos, respondeu quase envergonhado.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Eu... não sei.</p>
+                        <p>Ela não demonstrou surpresa.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Não se lembra de nada?</p>
+                        <p>Ele apenas balançou a cabeça.</p>
+                        <p>Ela permaneceu alguns instantes em silêncio antes de puxar uma cadeira e sentar ao lado da cama.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Meu nome é Alice. Você está seguro. Este lugar se chama A Maré do Primeiro Lar.</p>
+                        <p>O rapaz repetiu o nome baixinho, como se tentasse gravá-lo.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Eu encontrei você numa praia, há algumas semanas. Estava gravemente ferido... e cercado por dezenas de caranguejos.</p>
+                        <p>Ele ergueu uma sobrancelha.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Caranguejos?</p>
+                        <p>Alice sorriu.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Pareciam estar protegendo você. Nenhum deles permitia que alguém se aproximasse. Só foram embora quando conseguimos levá-lo para cá.</p>
+                        <p>O rapaz olhou novamente para a lamparina.</p>
+                        <p>Tudo aquilo parecia estranho.</p>
+                        <p>Mas, curiosamente...</p>
+                        <p>Também parecia certo.</p>
+                        <p>Como se aquele lugar não fosse completamente desconhecido.</p>
+                        <p>Nos dias seguintes, sua recuperação aconteceu lentamente.</p>
+                        <p>A Igreja da Maré do Primeiro Lar era simples, construída sobre um penhasco de onde era possível observar o oceano durante todo o dia. As paredes claras carregavam marcas deixadas pela maresia, enquanto grandes vitrais azulados coloriam o chão quando a luz do sol atravessava o templo. Atrás da igreja existia um pequeno jardim repleto de flores silvestres e ervas medicinais, cuidadas pelos próprios moradores.</p>
+                        <p>Ali ninguém perguntava quem ele havia sido.</p>
+                        <p>Importava apenas quem ele era naquele momento.</p>
+                        <p>Alice tornou-se sua companhia mais constante. Era ela quem trocava seus curativos, o acompanhava durante as caminhadas e lhe apresentava cada canto da igreja. Com o passar das semanas, ele também conheceu os demais moradores: pescadores aposentados, crianças órfãs acolhidas pelo templo, cozinheiras, jardineiros e religiosos que dedicavam seus dias a cuidar de quem precisava de ajuda.</p>
+                        <p>Pouco a pouco, aquele lugar começou a parecer um lar.</p>
+                        <p>Certa tarde, enquanto caminhavam pelo jardim, Alice perguntou:</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Ainda não encontrou um nome?</p>
+                        <p>Ele ficou em silêncio.</p>
+                        <p>Não existia resposta.</p>
+                        <p>Apenas um vazio.</p>
+                        <p>Ela sorriu delicadamente.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então... posso escolher um para você?</p>
+                        <p>Ele assentiu.</p>
+                        <p>Alice olhou em direção ao mar antes de responder:</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você chegou até nós trazido pela maré... e é um Undyne. Acho que "Maré" combina com você.</p>
+                        <p>Ele repetiu o nome em voz baixa.</p>
+                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">Maré.</p>
+                        <p>Pela primeira vez desde que despertara...</p>
+                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">Sentiu que pertencia a alguma coisa.</p>
+                        <p>Desde então, todos passaram a chamá-lo assim.</p>
+                        <p>Com o passar dos meses, Maré começou a ajudar na igreja. Cuidava do jardim, carregava caixas, ajudava na cozinha, auxiliava pescadores idosos a consertarem suas redes e brincava com as crianças que viviam ali. Não demorou para que seu jeito gentil conquistasse o carinho de todos.</p>
+                        <p>Mas havia um lugar que se tornou especial.</p>
+                        <p>No centro do templo existia uma enorme estátua representando o Signo de Câncer. Não era uma imagem imponente ou assustadora. Seu rosto transmitia serenidade, e suas mãos permaneciam abertas como se acolhessem qualquer pessoa que se aproximasse.</p>
+                        <p>Enquanto os demais religiosos faziam longas orações, Maré simplesmente se sentava diante da estátua.</p>
+                        <p>E conversava.</p>
+                        <p>Contava como havia sido seu dia.</p>
+                        <p>Falava sobre os peixes que ajudara a pescar.</p>
+                        <p>Reclamava quando alguma criança o fazia correr pelo jardim.</p>
+                        <p>Perguntava por que gostava tanto do mar, mesmo sem lembrar de seu passado.</p>
+                        <p>Nunca esperava uma resposta.</p>
+                        <p>Ainda assim, saía dali sentindo-se mais leve.</p>
+                        <p>Alice percebeu esse hábito antes de qualquer outra pessoa.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você nunca faz pedidos.</p>
+                        <p>Maré sorriu discretamente.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Acho que... amigos conversam.</p>
+                        <p>Ela riu.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então é isso que Câncer é para você?</p>
+                        <p>Ele olhou para a estátua.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Não sei explicar.</p>
+                        <p>Fez uma pequena pausa.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Mas quando converso aqui... sinto como se nunca estivesse sozinho.</p>
+                        <p>Alice não respondeu.</p>
+                        <p>Apenas sorriu.</p>
+                        <p>Naquele instante, percebeu que o rapaz encontrado desacordado naquela praia já não era apenas alguém que precisava ser salvo.</p>
+                        <p>Ele havia encontrado um novo motivo para viver.</p>
+                        <p style="text-align: center; color: #66cc99; font-size: 1.3rem; font-style: italic;">E, mesmo sem lembrar do próprio passado...</p>
+                        <p style="text-align: center; color: #66cc99; font-size: 1.3rem; font-style: italic;">Finalmente havia encontrado um lugar que podia chamar de lar.</p>
+                    </div>
+                    <button class="btn-proximo" onclick="abrirCapitulo('capitulo4')">Próximo Capítulo →</button>
+                </div>
+            </div>
+
+            <!-- ============================================================
+               CAPÍTULO IV
+            ============================================================ -->
+            <div class="capitulo-card" id="capitulo4">
+                <div class="capitulo-header">
+                    <img src="cancer_cap4.png" alt="Capítulo IV" class="imagem-destaque" onerror="this.style.display='none'" />
+                    <div>
+                        <h3>Capítulo IV — Fim do Recomeço</h3>
+                        <blockquote>"A fé não nasce quando todos concordam. Ela nasce quando alguém escolhe amar mesmo em meio ao ódio."</blockquote>
+                        <span class="abrir-indicador">▼ Clique para ler</span>
+                    </div>
+                </div>
+                <div class="capitulo-body" id="body4">
+                    <div class="texto">
+                        <p>Os anos passaram quase sem que Maré percebesse. Aos vinte e um anos, já era conhecido por praticamente todos os moradores da pequena ilha onde a Igreja da Maré do Primeiro Lar havia sido construída. Nunca ocupou um cargo importante dentro da religião, nunca desejou ser lembrado como sacerdote ou líder. Preferia permanecer entre as pessoas comuns, ajudando na cozinha, consertando telhados, carregando caixas de mantimentos ou acompanhando os pescadores ao amanhecer.</p>
+                        <p>Todos o conheciam pelo mesmo motivo.</p>
+                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">Sua bondade.</p>
+                        <p>Sempre que alguém precisava de ajuda, Maré estava por perto.</p>
+                        <p>Com o tempo, passou a conhecer pessoas de outras religiões. Alguns seguiam antigos deuses, outros veneravam diferentes Signos e havia até aqueles que não acreditavam em nada. Para ele, isso jamais fez diferença. Sentava-se à mesa com qualquer um, compartilhava uma refeição, ouvia histórias e ria como se todos já fossem velhos amigos.</p>
+                        <p>Mas o mundo mudava.</p>
+                        <p>A cada ano, novas disputas religiosas surgiam. Igrejas eram queimadas, templos saqueados e cidades divididas por pessoas que acreditavam lutar em nome da fé. O que deveria aproximar os povos passou a separá-los.</p>
+                        <p>A Maré do Primeiro Lar recusava-se a participar daquela guerra.</p>
+                        <p>Até o dia em que ela chegou.</p>
+
+                        <img src="cancer_cap4_2.png" alt="A igreja em chamas" class="imagem-destaque" onerror="this.style.display='none'" />
+
+                        <p>Naquela madrugada, o silêncio foi quebrado pelo som de vidro se partindo e pelo cheiro de fumaça que invadiu os corredores do templo. Homens armados atravessaram os portões sem piedade, destruindo tudo o que encontravam pelo caminho. Livros foram lançados ao fogo, bancos de madeira transformaram-se em destroços e muitos dos moradores não tiveram tempo sequer de fugir.</p>
+                        <p>Maré ajudou crianças e idosos a escaparem pelas portas dos fundos enquanto Alice conduzia os feridos para um lugar seguro.</p>
+                        <p>Quando o sol nasceu, restavam apenas ruínas.</p>
+                        <p>O padre que cuidara da igreja durante tantos anos havia morrido tentando proteger outras pessoas. O templo que acolhera Maré quando ele não possuía nome transformara-se em cinzas.</p>
+                        <p>Alguns dias depois, representantes da igreja reuniram os sobreviventes.</p>
+                        <p>Muitos queriam revidar.</p>
+                        <p>Outros desejavam vingança.</p>
+                        <p>Maré permaneceu em silêncio durante toda a reunião.</p>
+                        <p>Quando finalmente falou, sua voz era calma.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Se respondermos ao ódio com mais ódio... ninguém vence.</p>
+                        <p>Alguns concordaram.</p>
+                        <p>Outros o chamaram de ingênuo.</p>
+                        <p>Na manhã seguinte, sem dizer a ninguém para onde iria, Maré vestiu uma camisa simples e começou a prender pequenos broches sobre o tecido. Cada um representava uma religião diferente que havia conhecido ao longo da vida. Não importava qual era o símbolo. Importava o significado. Todos pertenciam a alguém.</p>
+                        <p>Alice o encontrou terminando de ajeitar a roupa.</p>
+                        <p>Seu olhar imediatamente se encheu de preocupação.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Maré... o que você está fazendo?</p>
+                        <p>Ele sorriu como sempre fazia.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Indo ajudar.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Lá fora ainda estão lutando.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Eu sei.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Eles podem matar você.</p>
+                        <p>Maré abaixou os olhos por alguns segundos.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então espero conseguir salvar alguém antes disso.</p>
+                        <p>Alice segurou seu braço.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Fica aqui...</p>
+                        <p>Ele olhou para ela com carinho.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Se eu disser que acredito em acolher qualquer pessoa, mas só ajudar quem pensa como eu... então tudo o que aprendi aqui perdeu o sentido.</p>
+                        <p>Sem levar qualquer arma consigo, Maré partiu carregando apenas uma mochila cheia de bandagens, ervas medicinais e remédios.</p>
+                        <p>Durante dias percorreu campos de batalha.</p>
+                        <p>Não perguntava o nome.</p>
+                        <p>Não perguntava a religião.</p>
+                        <p>Não perguntava a raça.</p>
+                        <p>Apenas cuidava.</p>
+                        <p>Salvou seguidores de diferentes crenças, tratou soldados inimigos, carregou crianças feridas nos braços e consolou pessoas que jamais voltariam a ver suas famílias.</p>
+                        <p>Alguns passaram a chamá-lo de louco.</p>
+                        <p>Outros o chamavam de santo.</p>
+                        <p>Ele nunca respondeu a nenhum dos dois.</p>
+                        <p>Mas sua atitude começou a incomodar.</p>
+                        <p>Afinal, toda pessoa salva por Maré era alguém que voltava a viver quando outros desejavam sua morte.</p>
+                        <p>Numa tarde chuvosa, caiu em uma emboscada.</p>
+                        <p>Foi cercado por homens que acreditavam oferecer sua vida como tributo ao deus que veneravam. Mesmo ferido, conseguiu escapar enquanto a chuva escondia seus passos entre a mata.</p>
+                        <p>Correu o quanto pôde.</p>
+                        <p>Cada respiração queimava.</p>
+                        <p>O sangue escorria por suas roupas.</p>
+                        <p>As forças desapareciam aos poucos.</p>
+                        <p>Mesmo assim...</p>
+                        <p>Continuou caminhando.</p>
+                        <p>Seus pés o conduziram instintivamente para o único lugar que seu coração reconhecia como lar.</p>
+                        <p>Quando finalmente chegou em casa, encontrou apenas silêncio.</p>
+                        <p>A Igreja da Maré do Primeiro Lar havia desaparecido.</p>
+                        <p>As paredes estavam destruídas.</p>
+                        <p>O telhado desabara.</p>
+                        <p>O jardim onde tantas crianças brincaram havia sido consumido pelas chamas.</p>
+                        <p>Ainda assim...</p>
+                        <p>No centro das ruínas permanecia de pé a antiga estátua de Câncer.</p>
+                        <p>Nem o fogo.</p>
+                        <p>Nem a guerra.</p>
+                        <p>Nem o tempo haviam conseguido derrubá-la.</p>
+
+                        <img src="cancer_cap4_3.png" alt="A estátua de Câncer entre as ruínas" class="imagem-destaque" onerror="this.style.display='none'" />
+
+                        <p>Maré sorriu com dificuldade.</p>
+                        <p>Aproximou-se cambaleando até a estátua e deixou a mochila cair ao chão.</p>
+                        <p>Sentou-se lentamente diante dela, como fazia todas as tardes.</p>
+                        <p>Respirou fundo.</p>
+                        <p>E começou a conversar.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Oi...</p>
+                        <p>Sua voz saiu fraca.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Faz tempo que a gente não conversa direito.</p>
+                        <p>Olhou para o céu.</p>
+                        <p>O vento trazia novamente o cheiro do mar.</p>
+                        <p>O mesmo cheiro que o acompanhara desde a infância.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Acho que... hoje eu ajudei bastante gente.</p>
+                        <p>Um pequeno sorriso apareceu em seu rosto.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Espero que eles consigam voltar para casa.</p>
+                        <p>Fez silêncio.</p>
+                        <p>Depois apoiou a testa contra a pedra fria da estátua e a abraçou.</p>
+                        <p>Como se abraçasse um velho amigo.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Obrigado...</p>
+                        <p>Outra pausa.</p>
+                        <p>Quase um sussurro.</p>
+                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Obrigado... por ter me dado um lar.</p>
+                        <p>Seus olhos começaram a se fechar.</p>
+                        <p>Pela última vez, ouviu o som das ondas quebrando contra a costa.</p>
+                        <p>Sentiu a brisa tocar seu rosto.</p>
+                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">E partiu em paz.</p>
+                        <p>Dizem que, naquela noite, dezenas de caranguejos apareceram entre as ruínas da igreja. Nenhum deles tocou o corpo de Maré. Apenas permaneceram ao seu redor até o amanhecer, como guardiões silenciosos daquele homem que jamais aprenderam a chamar de santo...</p>
+                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">Porque, para eles, bastava chamá-lo de amigo.</p>
+                        <p>E, muito tempo depois, quando alguém perguntava quem havia sido Maré, a resposta nunca falava sobre batalhas, navios ou religiões. Diziam apenas que ele era um homem que acreditava que ninguém deveria enfrentar o mundo sozinho.</p>
+                        <p style="text-align: center; color: #66cc99; font-size: 1.3rem; margin-top: 1rem; font-style: italic;">E talvez fosse exatamente isso que significava encontrar um verdadeiro lar.</p>
+                    </div>
+                    <button class="btn-proximo fim">✦ Fim da história ✦</button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ============================================================
+           RODAPÉ
+        ============================================================ -->
+        <div class="footer-simbolo">
+            ⋆°.☾⋆.ೃ࿔*:⋆ ⋆°.☾⋆.ೃ࿔*:⋆ ⋆°.☾⋆.ೃ࿔*:⋆
+        </div>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="btn-voltar">← Voltar às constelações</a>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================================
+        // ESTRELAS CADENTES
+        // ============================================================
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas.getContext('2d');
+        let W, H;
+
+        function resizeCanvas() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const stars = [];
+        for (let i = 0; i < 180; i++) {
+            stars.push({
+                x: Math.random() * W,
+                y: Math.random() * H,
+                r: Math.random() * 1.5 + 0.5,
+                alpha: Math.random() * 0.8 + 0.2,
+                speed: Math.random() * 0.008 + 0.003,
+            });
+        }
+
+        let meteors = [];
+
+        function spawnMeteor() {
+            const x = Math.random() * W * 0.8 + W * 0.1;
+            const y = Math.random() * H * 0.3;
+            const angle = Math.PI / 4 + (Math.random() - 0.5) * 0.5;
+            const speed = 6 + Math.random() * 10;
+            const life = 120 + Math.random() * 100;
+            meteors.push({
+                x,
+                y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                life,
+                maxLife: life,
+                size: 2 + Math.random() * 2
+            });
+        }
+
+        setInterval(() => {
+            if (meteors.length < 6) spawnMeteor();
+        }, 3000 + Math.random() * 4000);
+
+        for (let i = 0; i < 3; i++) setTimeout(spawnMeteor, i * 800);
+
+        function drawStars() {
+            ctx.clearRect(0, 0, W, H);
+
+            stars.forEach(s => {
+                const flicker = 0.7 + 0.3 * Math.sin(Date.now() * s.speed);
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 240, 220, ${s.alpha * flicker})`;
+                ctx.fill();
+            });
+
+            for (let i = meteors.length - 1; i >= 0; i--) {
+                const m = meteors[i];
+                m.x += m.vx;
+                m.y += m.vy;
+                m.life--;
+
+                const progress = 1 - (m.life / m.maxLife);
+                const alpha = 1 - progress * 0.9;
+
+                const gradient = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.size * 8);
+                gradient.addColorStop(0, `rgba(255, 240, 230, ${alpha})`);
+                gradient.addColorStop(0.3, `rgba(200, 180, 255, ${alpha * 0.5})`);
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+                ctx.beginPath();
+                ctx.arc(m.x, m.y, m.size * 6, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(m.x, m.y, m.size * 0.8, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.9})`;
+                ctx.fill();
+
+                if (m.life <= 0 || m.x > W + 50 || m.y > H + 50) {
+                    meteors.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+
+        // ============================================================
+        // MÚSICA DE FUNDO
+        // ============================================================
+        const musicBtn = document.getElementById('musicBtn');
+        let audioFundo = null;
+        let isPlayingFundo = false;
+
+        function initAudioFundo() {
+            if (!audioFundo) {
+                audioFundo = new Audio('background-music.mp3');
+                audioFundo.loop = true;
+                audioFundo.volume = 0.3;
+            }
+        }
+
+        function toggleMusicFundo() {
+            initAudioFundo();
+            if (isPlayingFundo) {
+                audioFundo.pause();
+                isPlayingFundo = false;
+                musicBtn.textContent = '🔇';
+            } else {
+                audioFundo.play().catch(() => {});
+                isPlayingFundo = true;
+                musicBtn.textContent = '🔊';
+            }
+        }
+
+        musicBtn.addEventListener('click', toggleMusicFundo);
+
+        document.addEventListener('click', () => {
+            if (!audioFundo) {
+                initAudioFundo();
+                audioFundo.play().then(() => {
+                    isPlayingFundo = true;
+                    musicBtn.textContent = '🔊';
+                }).catch(() => {});
+            }
+        }, { once: true });
+
+        // ============================================================
+        // ABRIR CAPÍTULOS
+        // ============================================================
+        function abrirCapitulo(id) {
+            const card = document.getElementById(id);
+            if (card) {
+                const body = card.querySelector('.capitulo-body');
+                if (body) {
+                    document.querySelectorAll('.capitulo-body.aberto').forEach(b => {
+                        if (b !== body) {
+                            b.classList.remove('aberto');
+                            const indicador = b.closest('.capitulo-card').querySelector('.abrir-indicador');
+                            if (indicador) indicador.textContent = '▼ Clique para ler';
+                        }
+                    });
+                    const isOpen = body.classList.contains('aberto');
+                    body.classList.toggle('aberto');
+                    const indicador = card.querySelector('.abrir-indicador');
+                    if (indicador) {
+                        indicador.textContent = isOpen ? '▼ Clique para ler' : '▲ Fechar';
+                    }
+                    if (!isOpen) {
+                        setTimeout(() => {
+                            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                    }
+                }
+            }
+        }
+
+        document.querySelectorAll('.capitulo-card').forEach(card => {
+            const header = card.querySelector('.capitulo-header');
+            if (header) {
+                header.style.cursor = 'pointer';
+                header.addEventListener('click', function(e) {
+                    if (e.target.closest('.btn-proximo')) return;
+                    const id = card.id;
+                    if (id) abrirCapitulo(id);
+                });
+            }
+        });
+
+        console.log('🦀 Câncer — Maré carregado.');
+    </script>
+</body>
+</html>
