@@ -373,9 +373,6 @@
             color: #b8aed0;
         }
 
-        /* ============================================================
-           BOTÃO DA MÚSICA DO CÂNCER
-        ============================================================ */
         .btn-cancer-music {
             display: inline-block;
             margin-top: 1.5rem;
@@ -424,22 +421,17 @@
 
     <div class="container">
 
-        <!-- ===================== HERO ===================== -->
         <header class="hero fade-in">
             <h1>♋ Maré</h1>
             <p class="subtitle">
                 <strong>"A maior força não está em lutar, mas em permanecer gentil."</strong>
             </p>
 
-            <!-- ============================================================
-               BOTÃO DA MÚSICA DO CÂNCER
-            ============================================================ -->
             <button class="btn-cancer-music" id="btnCancerMusic">
                 🎵 Ouvir música de Maré
             </button>
         </header>
 
-        <!-- ===================== PERFIL ===================== -->
         <section class="fade-in delay-1">
             <h2>Perfil</h2>
             <div class="perfil-grid">
@@ -469,9 +461,6 @@
             </div>
         </section>
 
-        <!-- ============================================================
-           CAPÍTULOS
-        ============================================================ -->
         <section class="fade-in delay-2">
             <h2>Capítulos</h2>
 
@@ -835,9 +824,6 @@
 
         </section>
 
-        <!-- ============================================================
-           RODAPÉ
-        ============================================================ -->
         <div class="footer-simbolo">
             ⋆°.☾⋆.ೃ࿔*:⋆ ⋆°.☾⋆.ೃ࿔*:⋆ ⋆°.☾⋆.ೃ࿔*:⋆
         </div>
@@ -984,7 +970,7 @@
         }, { once: true });
 
         // ============================================================
-        // MÚSICA DO CÂNCER (MARÉ)
+        // MÚSICA DO CÂNCER (MARÉ) — CORRIGIDA COM VERIFICAÇÃO
         // ============================================================
         const btnCancerMusic = document.getElementById('btnCancerMusic');
         let audioCancer = null;
@@ -992,41 +978,85 @@
 
         if (btnCancerMusic) {
             btnCancerMusic.addEventListener('click', function() {
+                // Se o áudio ainda não foi criado, cria
                 if (!audioCancer) {
-                    audioCancer = new Audio('cancer-music.mp3');
-                    audioCancer.loop = true;
-                    audioCancer.volume = 0.5;
-                    audioCancer.addEventListener('ended', () => {
-                        isPlayingCancer = false;
-                        btnCancerMusic.textContent = '🎵 Ouvir música de Maré';
-                        btnCancerMusic.classList.remove('playing');
-                    });
+                    try {
+                        audioCancer = new Audio('cancer-music.mp3');
+                        audioCancer.loop = true;
+                        audioCancer.volume = 0.5;
+
+                        // Evento quando a música termina
+                        audioCancer.addEventListener('ended', () => {
+                            isPlayingCancer = false;
+                            btnCancerMusic.textContent = '🎵 Ouvir música de Maré';
+                            btnCancerMusic.classList.remove('playing');
+                        });
+
+                        // Evento de erro (arquivo não encontrado)
+                        audioCancer.addEventListener('error', function(e) {
+                            console.error('Erro ao carregar música:', e);
+                            alert('Erro: O arquivo "cancer-music.mp3" não foi encontrado. Verifique se ele está na pasta.');
+                            btnCancerMusic.textContent = '🎵 Ouvir música de Maré';
+                            btnCancerMusic.classList.remove('playing');
+                            isPlayingCancer = false;
+                            // Tenta voltar a música de fundo
+                            if (audioFundo && !isPlayingFundo) {
+                                audioFundo.play().catch(() => {});
+                                isPlayingFundo = true;
+                                musicBtn.textContent = '🔊';
+                            }
+                        });
+
+                        console.log('🎵 Player de música do Câncer carregado.');
+                    } catch (e) {
+                        alert('Erro ao criar o player: ' + e.message);
+                        return;
+                    }
                 }
 
+                // Se já está tocando, pausa
                 if (isPlayingCancer) {
                     audioCancer.pause();
                     isPlayingCancer = false;
                     btnCancerMusic.textContent = '🎵 Ouvir música de Maré';
                     btnCancerMusic.classList.remove('playing');
-                    // Volta a música de fundo se estava tocando
-                    if (audioFundo && isPlayingFundo) {
-                        // Já está tocando, não faz nada
-                    }
-                } else {
-                    // Pausa a música de fundo se estiver tocando
-                    if (audioFundo && isPlayingFundo) {
-                        audioFundo.pause();
-                        isPlayingFundo = false;
-                        musicBtn.textContent = '🔇';
-                    }
 
-                    audioCancer.play().catch(() => {
-                        alert('Clique em qualquer lugar da página primeiro para ativar o áudio.');
-                    });
-                    isPlayingCancer = true;
-                    btnCancerMusic.textContent = '⏹️ Parar música';
-                    btnCancerMusic.classList.add('playing');
+                    // Volta a música de fundo
+                    if (audioFundo && !isPlayingFundo) {
+                        audioFundo.play().catch(() => {});
+                        isPlayingFundo = true;
+                        musicBtn.textContent = '🔊';
+                    }
+                    return;
                 }
+
+                // Se não está tocando, tenta tocar
+                // Pausa a música de fundo primeiro
+                if (audioFundo && isPlayingFundo) {
+                    audioFundo.pause();
+                    isPlayingFundo = false;
+                    musicBtn.textContent = '🔇';
+                }
+
+                // Tenta tocar a música do Câncer
+                audioCancer.play()
+                    .then(() => {
+                        isPlayingCancer = true;
+                        btnCancerMusic.textContent = '⏹️ Parar música';
+                        btnCancerMusic.classList.add('playing');
+                        console.log('🎵 Música de Maré tocando.');
+                    })
+                    .catch((err) => {
+                        console.error('Erro ao tocar:', err);
+                        alert('Erro ao tocar a música. Clique na página primeiro e tente novamente.');
+                        // Volta a música de fundo se falhou
+                        if (audioFundo && !isPlayingFundo) {
+                            audioFundo.play().catch(() => {});
+                            isPlayingFundo = true;
+                            musicBtn.textContent = '🔊';
+                        }
+                        btnCancerMusic.classList.remove('playing');
+                    });
             });
         }
 
@@ -1073,7 +1103,10 @@
         });
 
         console.log('🦀 Câncer — Maré carregado.');
-        console.log('🎵 Música de Maré disponível em: cancer-music.mp3');
+        console.log('🎵 Música de Maré: cancer-music.mp3');
+        console.log('💡 Clique no botão "Ouvir música de Maré" para tocar.');
     </script>
 </body>
 </html>
+
+.
