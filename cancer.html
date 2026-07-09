@@ -372,6 +372,48 @@
             border-color: rgba(180, 150, 200, 0.15);
             color: #b8aed0;
         }
+
+        /* ============================================================
+           BOTÃO DA MÚSICA DO CÂNCER
+        ============================================================ */
+        .btn-cancer-music {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.8rem 2.5rem;
+            background: rgba(102, 204, 153, 0.12);
+            border: 1px solid rgba(102, 204, 153, 0.2);
+            border-radius: 30px;
+            color: #66cc99;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            animation: pulsarBotao 3s ease-in-out infinite;
+        }
+
+        .btn-cancer-music:hover {
+            background: rgba(102, 204, 153, 0.2);
+            border-color: #66cc99;
+            color: #f0e6d0;
+            transform: scale(1.05);
+        }
+
+        .btn-cancer-music.playing {
+            background: rgba(199, 122, 122, 0.12);
+            border-color: rgba(199, 122, 122, 0.2);
+            color: #c77a7a;
+        }
+
+        @keyframes pulsarBotao {
+            0%,
+            100% {
+                box-shadow: 0 0 10px rgba(102, 204, 153, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(102, 204, 153, 0.3);
+            }
+        }
     </style>
 </head>
 <body>
@@ -388,6 +430,13 @@
             <p class="subtitle">
                 <strong>"A maior força não está em lutar, mas em permanecer gentil."</strong>
             </p>
+
+            <!-- ============================================================
+               BOTÃO DA MÚSICA DO CÂNCER
+            ============================================================ -->
+            <button class="btn-cancer-music" id="btnCancerMusic">
+                🎵 Ouvir música de Maré
+            </button>
         </header>
 
         <!-- ===================== PERFIL ===================== -->
@@ -421,11 +470,12 @@
         </section>
 
         <!-- ============================================================
-           CAPÍTULO I
+           CAPÍTULOS
         ============================================================ -->
         <section class="fade-in delay-2">
             <h2>Capítulos</h2>
 
+            <!-- CAPÍTULO I -->
             <div class="capitulo-card" id="capitulo1">
                 <div class="capitulo-header">
                     <img src="cancer_cap1.png" alt="Capítulo I" class="imagem-destaque" onerror="this.style.display='none'" />
@@ -499,9 +549,7 @@
                 </div>
             </div>
 
-            <!-- ============================================================
-               CAPÍTULO II
-            ============================================================ -->
+            <!-- CAPÍTULO II -->
             <div class="capitulo-card" id="capitulo2">
                 <div class="capitulo-header">
                     <img src="cancer_cap2.png" alt="Capítulo II" class="imagem-destaque" onerror="this.style.display='none'" />
@@ -563,9 +611,7 @@
                 </div>
             </div>
 
-            <!-- ============================================================
-               CAPÍTULO III
-            ============================================================ -->
+            <!-- CAPÍTULO III -->
             <div class="capitulo-card" id="capitulo3">
                 <div class="capitulo-header">
                     <img src="cancer_cap3.png" alt="Capítulo III" class="imagem-destaque" onerror="this.style.display='none'" />
@@ -668,9 +714,7 @@
                 </div>
             </div>
 
-            <!-- ============================================================
-               CAPÍTULO IV
-            ============================================================ -->
+            <!-- CAPÍTULO IV -->
             <div class="capitulo-card" id="capitulo4">
                 <div class="capitulo-header">
                     <img src="cancer_cap4.png" alt="Capítulo IV" class="imagem-destaque" onerror="this.style.display='none'" />
@@ -900,7 +944,7 @@
         drawStars();
 
         // ============================================================
-        // MÚSICA DE FUNDO
+        // MÚSICA DE FUNDO (GERAL)
         // ============================================================
         const musicBtn = document.getElementById('musicBtn');
         let audioFundo = null;
@@ -938,6 +982,53 @@
                 }).catch(() => {});
             }
         }, { once: true });
+
+        // ============================================================
+        // MÚSICA DO CÂNCER (MARÉ)
+        // ============================================================
+        const btnCancerMusic = document.getElementById('btnCancerMusic');
+        let audioCancer = null;
+        let isPlayingCancer = false;
+
+        if (btnCancerMusic) {
+            btnCancerMusic.addEventListener('click', function() {
+                if (!audioCancer) {
+                    audioCancer = new Audio('cancer-music.mp3');
+                    audioCancer.loop = true;
+                    audioCancer.volume = 0.5;
+                    audioCancer.addEventListener('ended', () => {
+                        isPlayingCancer = false;
+                        btnCancerMusic.textContent = '🎵 Ouvir música de Maré';
+                        btnCancerMusic.classList.remove('playing');
+                    });
+                }
+
+                if (isPlayingCancer) {
+                    audioCancer.pause();
+                    isPlayingCancer = false;
+                    btnCancerMusic.textContent = '🎵 Ouvir música de Maré';
+                    btnCancerMusic.classList.remove('playing');
+                    // Volta a música de fundo se estava tocando
+                    if (audioFundo && isPlayingFundo) {
+                        // Já está tocando, não faz nada
+                    }
+                } else {
+                    // Pausa a música de fundo se estiver tocando
+                    if (audioFundo && isPlayingFundo) {
+                        audioFundo.pause();
+                        isPlayingFundo = false;
+                        musicBtn.textContent = '🔇';
+                    }
+
+                    audioCancer.play().catch(() => {
+                        alert('Clique em qualquer lugar da página primeiro para ativar o áudio.');
+                    });
+                    isPlayingCancer = true;
+                    btnCancerMusic.textContent = '⏹️ Parar música';
+                    btnCancerMusic.classList.add('playing');
+                }
+            });
+        }
 
         // ============================================================
         // ABRIR CAPÍTULOS
@@ -982,6 +1073,7 @@
         });
 
         console.log('🦀 Câncer — Maré carregado.');
+        console.log('🎵 Música de Maré disponível em: cancer-music.mp3');
     </script>
 </body>
 </html>
