@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 
     <style>
         * {
@@ -24,6 +24,9 @@
             overflow-x: hidden;
         }
 
+        /* ============================================================
+           FUNDO — NEBULOSA ROXA COM ESTRELAS
+        ============================================================ */
         #stars-canvas {
             position: fixed;
             top: 0;
@@ -32,6 +35,35 @@
             height: 100vh;
             z-index: 0;
             pointer-events: none;
+        }
+
+        #nebulosa-sora {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 30% 30%, rgba(120, 60, 200, 0.12), transparent 60%),
+                        radial-gradient(ellipse at 70% 70%, rgba(200, 80, 180, 0.08), transparent 60%),
+                        radial-gradient(ellipse at 50% 50%, rgba(80, 40, 160, 0.06), transparent 70%);
+            animation: nebulosaSora 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes nebulosaSora {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.15) rotate(3deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.95) rotate(-2deg);
+                opacity: 0.7;
+            }
         }
 
         .container {
@@ -50,16 +82,28 @@
             align-items: center;
             text-align: center;
             padding: 2rem 0;
+            position: relative;
         }
 
         .hero h1 {
             font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: clamp(2.8rem, 10vw, 5.5rem);
-            color: #a78bfa;
-            text-shadow: 0 0 40px rgba(167, 139, 250, 0.25);
+            font-weight: 900;
+            font-size: clamp(3rem, 10vw, 5.5rem);
+            color: #d4c0f0;
+            text-shadow: 0 0 40px rgba(167, 139, 250, 0.25), 0 0 80px rgba(167, 139, 250, 0.1);
             letter-spacing: 0.1em;
             margin-bottom: 0.5rem;
+            animation: tituloBrilho 4s ease-in-out infinite;
+        }
+
+        @keyframes tituloBrilho {
+            0%,
+            100% {
+                text-shadow: 0 0 40px rgba(167, 139, 250, 0.2), 0 0 80px rgba(167, 139, 250, 0.1);
+            }
+            50% {
+                text-shadow: 0 0 60px rgba(167, 139, 250, 0.4), 0 0 120px rgba(167, 139, 250, 0.2);
+            }
         }
 
         .hero .subtitle {
@@ -67,9 +111,21 @@
             color: #b8aed0;
             font-style: italic;
             max-width: 700px;
-            border-top: 1px solid rgba(180, 150, 200, 0.15);
+            border-top: 1px solid rgba(167, 139, 250, 0.15);
             padding-top: 1rem;
             margin-top: 0.5rem;
+            position: relative;
+        }
+
+        .hero .subtitle::before {
+            content: '✦';
+            position: absolute;
+            top: -0.6rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #a78bfa;
+            font-size: 0.8rem;
+            opacity: 0.6;
         }
 
         .hero .subtitle strong {
@@ -80,30 +136,59 @@
         section {
             margin: 4rem 0;
             padding: 2rem 0;
-            border-bottom: 1px solid rgba(180, 150, 200, 0.06);
+            border-bottom: 1px solid rgba(167, 139, 250, 0.06);
+            position: relative;
         }
         section:last-of-type {
             border-bottom: none;
         }
 
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(167, 139, 250, 0.1), transparent);
+        }
+
         h2 {
             font-family: 'Cinzel', serif;
+            font-weight: 700;
             font-size: 2rem;
-            color: #a78bfa;
+            color: #d4c0f0;
             letter-spacing: 0.05em;
             margin-bottom: 2rem;
             text-align: center;
+            position: relative;
         }
+
         h2::after {
             content: ' ✦';
-            color: #b8aed0;
+            color: #a78bfa;
             font-size: 1.2rem;
+            opacity: 0.6;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #a78bfa, transparent);
+            opacity: 0.3;
         }
 
         .perfil-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: 2.5rem;
+            margin-top: 1rem;
         }
         @media (max-width: 700px) {
             .perfil-grid {
@@ -115,8 +200,16 @@
         .perfil-card {
             background: rgba(20, 15, 30, 0.6);
             padding: 1.5rem 2rem;
-            border-radius: 12px;
+            border-radius: 16px;
             border-left: 3px solid #a78bfa;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .perfil-card:hover {
+            border-left-color: #d4c0f0;
+            box-shadow: 0 0 30px rgba(167, 139, 250, 0.05);
+            transform: translateY(-2px);
         }
 
         .perfil-card h3 {
@@ -133,10 +226,14 @@
 
         .perfil-card li {
             padding: 0.3rem 0;
-            border-bottom: 1px solid rgba(180, 150, 200, 0.05);
+            border-bottom: 1px solid rgba(167, 139, 250, 0.06);
+            transition: all 0.3s ease;
         }
         .perfil-card li:last-child {
             border-bottom: none;
+        }
+        .perfil-card li:hover {
+            padding-left: 0.5rem;
         }
 
         .perfil-card .destaque {
@@ -148,51 +245,77 @@
             width: 100%;
             max-height: 400px;
             object-fit: cover;
-            border-radius: 12px;
+            border-radius: 14px;
             margin: 1.5rem 0;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .imagem-destaque:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 50px rgba(167, 139, 250, 0.1);
         }
 
         .texto-justificado p {
             margin-bottom: 1rem;
             text-align: justify;
+            font-size: 1.05rem;
+            color: #d0d0d0;
         }
 
-        .citacao {
+        .texto-justificado p strong {
+            color: #a78bfa;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+        }
+
+        /* REMOVIDO o efeito ::first-letter */
+
+        .citacao-destaque {
             font-style: italic;
             color: #b8aed0;
             text-align: center;
             padding: 1.5rem 0;
-            border-top: 1px solid rgba(180, 150, 200, 0.08);
-            border-bottom: 1px solid rgba(180, 150, 200, 0.08);
-            margin: 2rem 0;
+            border-top: 1px solid rgba(167, 139, 250, 0.08);
+            border-bottom: 1px solid rgba(167, 139, 250, 0.08);
+            margin: 1.5rem 0;
             font-size: 1.1rem;
+            transition: all 0.3s ease;
         }
 
-        .citacao strong {
+        .citacao-destaque:hover {
+            color: #d4c0f0;
+            border-color: rgba(167, 139, 250, 0.2);
+        }
+
+        .citacao-destaque strong {
             color: #a78bfa;
             font-style: normal;
+            font-family: 'Cinzel', serif;
         }
 
         .btn-voltar {
             display: inline-block;
             margin-top: 2.5rem;
             padding: 0.8rem 2.5rem;
-            background: rgba(167, 139, 250, 0.08);
-            border: 1px solid rgba(167, 139, 250, 0.15);
-            border-radius: 30px;
+            background: rgba(167, 139, 250, 0.06);
+            border: 1px solid rgba(167, 139, 250, 0.12);
+            border-radius: 50px;
             color: #a78bfa;
             font-family: 'Cinzel', serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             text-decoration: none;
+            letter-spacing: 0.05em;
         }
 
         .btn-voltar:hover {
-            background: rgba(167, 139, 250, 0.15);
+            background: rgba(167, 139, 250, 0.12);
             border-color: #a78bfa;
             color: #f0e6d0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(167, 139, 250, 0.08);
         }
 
         .footer-simbolo {
@@ -200,9 +323,10 @@
             font-size: 1.2rem;
             letter-spacing: 0.2em;
             color: #4a3f5a;
-            margin-top: 3rem;
+            margin-top: 4rem;
             padding-top: 2rem;
-            border-top: 1px solid rgba(180, 150, 200, 0.06);
+            border-top: 1px solid rgba(167, 139, 250, 0.06);
+            opacity: 0.6;
         }
 
         .music-control {
@@ -210,30 +334,32 @@
             bottom: 2rem;
             right: 2rem;
             z-index: 10;
-            background: rgba(20, 15, 30, 0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 15, 30, 0.7);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(180, 150, 200, 0.15);
             color: #d4c8e8;
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             font-size: 1.4rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
+
         .music-control:hover {
             background: rgba(40, 30, 60, 0.9);
             border-color: #b8aed0;
-            transform: scale(1.08);
+            transform: scale(1.08) rotate(8deg);
+            box-shadow: 0 0 30px rgba(180, 150, 200, 0.1);
         }
 
         .fade-in {
             opacity: 0;
-            transform: translateY(25px);
-            animation: fadeUp 1s ease forwards;
+            transform: translateY(30px);
+            animation: fadeUp 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
         @keyframes fadeUp {
             to {
@@ -253,17 +379,31 @@
         .delay-4 {
             animation-delay: 1s;
         }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(167, 139, 250, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(167, 139, 250, 0.5);
+        }
     </style>
 </head>
 <body>
 
+    <div id="nebulosa-sora"></div>
     <canvas id="stars-canvas"></canvas>
 
     <button class="music-control" id="musicBtn" aria-label="Controle de música">🔊</button>
 
     <div class="container">
 
-        <!-- ===================== HERO ===================== -->
         <header class="hero fade-in">
             <h1>Sora Kuuhaku</h1>
             <p class="subtitle">
@@ -271,7 +411,6 @@
             </p>
         </header>
 
-        <!-- ===================== PERFIL ===================== -->
         <section class="fade-in delay-1">
             <h2>Perfil</h2>
             <div class="perfil-grid">
@@ -299,18 +438,24 @@
             </div>
         </section>
 
-        <!-- ===================== ATO I ===================== -->
+        <!-- ============================================================
+           ATO I — PLÊIADES
+        ============================================================ -->
         <section class="fade-in delay-2">
             <h2>O Aglomerado de Plêiades</h2>
             <div class="texto-justificado">
                 <p>Em uma noite comum, quando todos dormiam pela noite, o céu mudou. Uma luz rasgou o firmamento. No horizonte, algo caía lentamente, deixando um rastro prateado que parecia dividir os próprios céus.</p>
                 <p>Um meteorito?</p>
                 <p>Não.</p>
-                <p>Uma estrela.</p>
+                <p><strong>Uma estrela.</strong></p>
                 <p>Ela havia abandonado seu lugar entre as incontáveis luzes do Aglomerado Plêiades, como se tivesse sido arrancada do universo por uma força externa. Nenhum sábio conseguiu explicar aquele fenômeno. As nuvens se abriram, revelando um céu completamente limpo, enquanto uma intensa luz azul envolvia o mundo.</p>
                 <p>O impacto fez a terra estremecer.</p>
                 <p>Quando a poeira finalmente baixou, não havia pedra alguma na cratera.</p>
-                <p>Havia um bebê.</p>
+
+                <div class="citacao-destaque">
+                    <p>Havia um bebê.</p>
+                </div>
+
                 <p>Jovem de aparência fria, possuía uma pele branca como a lua, com cabelos azul-escuros e olhos violeta. Vestia um longo manto negro adornado por detalhes dourados e um brilho que lembrava um céu estrelado. Uma cicatriz negra com pontos luminosos marcava o lado direito de seu rosto.</p>
 
                 <img src="sora.png" alt="Sora" class="imagem-destaque" onerror="this.style.display='none'" />
@@ -323,35 +468,52 @@
 
                 <img src="akurashi.png" alt="Akurashi observando" class="imagem-destaque" onerror="this.style.display='none'" />
 
-                <p>Seu nome era Akurashi.</p>
+                <p>Seu nome era <strong>Akurashi</strong>.</p>
                 <p>Assim como o bebê, possuía pele extremamente pálida e cabelos brancos como neve. Muitos o consideravam estranho desde seu nascimento, mas nunca recebera qualquer tipo de veneração. Para o culto, era apenas mais um órfão acolhido por misericórdia.</p>
                 <p>Algumas semanas depois, durante uma cerimônia realizada sob um céu sem estrelas, os anciãos finalmente deram um nome ao menino.</p>
                 <p>Ele raramente chorava. Nunca sorria.</p>
                 <p>Seu olhar era vazio, distante, como se observasse um lugar inalcançável para qualquer ser.</p>
-                <p>Por isso recebeu o nome de <strong>Sora Kuuhaku</strong>.</p>
-                <p style="text-align: center; font-size: 1.5rem; color: #a78bfa; margin-top: 1rem;">"O Céu Vazio."</p>
+
+                <div class="citacao-destaque">
+                    <p style="font-size: 1.5rem; color: #a78bfa;">"O Céu Vazio."</p>
+                </div>
             </div>
         </section>
 
-        <!-- ===================== ATO II ===================== -->
+        <!-- ============================================================
+           ATO II — SIRIUS
+        ============================================================ -->
         <section class="fade-in delay-3">
             <h2>Ato II — Sirius</h2>
             <div class="texto-justificado">
-                <p>Aos quatro anos, Sora já havia percebido que era diferente das outras crianças. Desde que conseguia se lembrar, nunca havia sentido vontade de sorrir ou de chorar. Seu rosto permanecia sempre vazio, seus olhos caídos transmitiam uma frieza incomum para alguém tão pequeno, e nem mesmo ele entendia o motivo disso. No entanto, existia algo que despertava seu interesse acima de qualquer outra coisa: o conhecimento. Antes mesmo de completar três anos, já havia aprendido a ler praticamente sozinho. Passava horas folheando os livros antigos guardados pelo culto, muitos escritos em uma linguagem difícil até para os adultos. Nem sempre compreendia o significado das palavras, mas fazia questão de decorá-las. Quanto mais lia, mais perguntas surgiam. O que eram as estrelas? Por que existia uma lua? O que significava ser um deus? Por que todos se ajoelhavam diante dele? Nenhuma resposta parecia suficiente.</p>
+                <p>Aos quatro anos, Sora já havia percebido que era diferente das outras crianças. Desde que conseguia se lembrar, nunca havia sentido vontade de sorrir ou de chorar. Seu rosto permanecia sempre vazio, seus olhos caídos transmitiam uma frieza incomum para alguém tão pequeno, e nem mesmo ele entendia o motivo disso. No entanto, existia algo que despertava seu interesse acima de qualquer outra coisa: <strong>o conhecimento</strong>.</p>
+                <p>Antes mesmo de completar três anos, já havia aprendido a ler praticamente sozinho. Passava horas folheando os livros antigos guardados pelo culto, muitos escritos em uma linguagem difícil até para os adultos. Nem sempre compreendia o significado das palavras, mas fazia questão de decorá-las. Quanto mais lia, mais perguntas surgiam.</p>
+
+                <div class="citacao-destaque">
+                    <p>"O que eram as estrelas? Por que existia uma lua? O que significava ser um deus? Por que todos se ajoelhavam diante dele?"</p>
+                </div>
 
                 <img src="sora_lendo.png" alt="Sora lendo" class="imagem-destaque" onerror="this.style.display='none'" />
 
-                <p>Entre todas as pessoas daquele lugar, havia apenas uma cuja presença fazia Sora sentir algo diferente. Não era felicidade, nem carinho, tampouco amor. Era apenas... conforto. Akurashi sempre estava ao seu lado. Desde que conseguia lembrar, era ele quem o acompanhava para todos os lugares, permanecia próximo enquanto lia e nunca reclamava quando Sora simplesmente sentava ao seu lado em silêncio. O garoto nunca conseguiu explicar por que gostava de sua companhia, mas sempre que Akurashi estava por perto, o ambiente parecia menos estranho.</p>
+                <p>Entre todas as pessoas daquele lugar, havia apenas uma cuja presença fazia Sora sentir algo diferente. Não era felicidade, nem carinho, tampouco amor. Era apenas... <strong>conforto</strong>.</p>
+                <p>Akurashi sempre estava ao seu lado. Desde que conseguia lembrar, era ele quem o acompanhava para todos os lugares, permanecia próximo enquanto lia e nunca reclamava quando Sora simplesmente sentava ao seu lado em silêncio. O garoto nunca conseguiu explicar por que gostava de sua companhia, mas sempre que Akurashi estava por perto, o ambiente parecia menos estranho.</p>
 
                 <p>Naquela noite, porém, tudo parecia diferente.</p>
-                <p>A lua cheia iluminava completamente a floresta, banhando as árvores com uma luz prateada. Os membros do culto caminhavam entre as tochas acesas carregando expressões incomuns. Normalmente eram sérios, silenciosos e quase sem emoção, mas naquela noite sorriam. Alguns até pareciam felizes. Sora observava tudo em silêncio, registrando cada detalhe. Símbolos desconhecidos haviam sido desenhados no chão com tinta branca, formando um enorme círculo no centro da clareira. Ele tentou relacioná-los aos livros que havia lido, mas nunca encontrara aqueles desenhos antes.</p>
+                <p>A lua cheia iluminava completamente a floresta, banhando as árvores com uma luz prateada. Os membros do culto caminhavam entre as tochas acesas carregando expressões incomuns. Normalmente eram sérios, silenciosos e quase sem emoção, mas naquela noite <strong>sorriam</strong>. Alguns até pareciam felizes. Sora observava tudo em silêncio, registrando cada detalhe. Símbolos desconhecidos haviam sido desenhados no chão com tinta branca, formando um enorme círculo no centro da clareira. Ele tentou relacioná-los aos livros que havia lido, mas nunca encontrara aqueles desenhos antes.</p>
 
                 <p>No centro do ritual havia um pequeno trono de madeira.</p>
-                <p>O líder apenas apontou para ele.</p>
-                <p>"Levem Sora."</p>
+
+                <div class="citacao-destaque">
+                    <p>"Levem Sora."</p>
+                </div>
+
                 <p>Akurashi segurou delicadamente sua mão e o conduziu até o assento. Assim que Sora se sentou, sentiu a madeira fria sob seu corpo. Era desconfortável, mas permaneceu imóvel. Quando Akurashi tentou dar um passo para trás, foi imediatamente interrompido.</p>
-                <p>"O que está fazendo?"</p>
-                <p>"Permaneça ao lado dele. O tempo inteiro."</p>
+
+                <div class="citacao-destaque">
+                    <p>"— O que está fazendo?<br />
+                    — Permaneça ao lado dele. O tempo inteiro."</p>
+                </div>
+
                 <p>Sora ergueu discretamente o olhar para Akurashi. Não sabia explicar por quê, mas ficou satisfeito ao perceber que ele permaneceria ali. Talvez fosse porque já estivesse acostumado com sua presença.</p>
 
                 <p>As tochas foram erguidas e os cânticos começaram. Era uma língua completamente diferente de qualquer outra que Sora já havia encontrado nos livros do culto. Mesmo sem compreendê-la, prestou atenção em cada sílaba, tentando memorizar seus sons. Enquanto isso, um cheiro estranho começou a preencher o ar. Não era apenas fumaça. Havia algo diferente e pesado. Seus olhos acompanharam duas pessoas carregando um enorme objeto de madeira. Era comprido demais para ser um simples baú. Parecia um armário... ou talvez um caixão. Antes que pudesse pensar mais sobre aquilo, o objeto foi lançado diretamente na fogueira.</p>
@@ -362,46 +524,57 @@
                 <p>Todos ao redor começaram a celebrar.</p>
                 <p>Alguns levantavam as mãos para o céu.</p>
                 <p>Outros choravam de alegria.</p>
-                <p>Sora apenas observava.</p>
+                <p><strong>Sora apenas observava.</strong></p>
                 <p>Não entendia por que estavam felizes.</p>
-                <p>Quando o fogo finalmente diminuiu, o líder abriu os braços.</p>
-                <p>"Nosso Deus aceitou nossa oferenda."</p>
-                <p>Em seguida, voltou seus olhos para Akurashi.</p>
-                <p>"Você finalmente está quase pronto."</p>
-                <p>Sora inclinou levemente a cabeça, sem compreender o significado daquelas palavras.</p>
+
+                <div class="citacao-destaque">
+                    <p>"Nosso Deus aceitou nossa oferenda."<br />
+                    "Você finalmente está quase pronto."</p>
+                </div>
+
                 <p>O líder retirou uma pequena adaga. Primeiro, fez um corte na ponta do dedo de Akurashi. Uma única gota de sangue escorreu. Depois repetiu o mesmo gesto com Sora. O garoto observou seu próprio dedo em silêncio. O sangue era exatamente igual ao de Akurashi. Por um instante, aquilo despertou sua curiosidade. Se todos sangravam da mesma forma, por que diziam que ele era diferente?</p>
                 <p>As mãos dos dois foram aproximadas até que as gotas de sangue se encontrassem. Então o líder ordenou que Akurashi repetisse uma promessa. Que entregaria sua vida. Seus sonhos. Seu futuro. Tudo o que possuía. Que protegeria Sora até seu último suspiro.</p>
                 <p>Sora permaneceu calado durante toda a cerimônia.</p>
                 <p>Não compreendia por que alguém faria uma promessa tão absoluta.</p>
                 <p>Não compreendia por que Akurashi aceitou.</p>
-                <p>Mas, quando ouviu sua resposta firme, apenas um pensamento surgiu em sua mente.</p>
-                <p style="text-align: center; font-size: 1.2rem; color: #a78bfa; margin-top: 1rem;"><strong>Então ele continuará ao meu lado.</strong></p>
+
+                <div class="citacao-destaque">
+                    <p style="font-size: 1.2rem; color: #a78bfa;"><strong>Então ele continuará ao meu lado.</strong></p>
+                </div>
             </div>
         </section>
 
-        <!-- ===================== ATO III ===================== -->
+        <!-- ============================================================
+           ATO III — ANTARES
+        ============================================================ -->
         <section class="fade-in delay-4">
             <h2>Ato III — Antares</h2>
             <div class="texto-justificado">
                 <p>Os anos passaram rapidamente.</p>
                 <p>Conforme crescia, Sora compreendia cada vez melhor o mundo ao seu redor. Observava atentamente o comportamento dos cultistas, suas crenças, seus medos e, principalmente, sua devoção. Levou pouco tempo para perceber que toda aquela fé era previsível. Eles precisavam acreditar em algo maior do que si mesmos e, para eles, esse algo era Sora.</p>
-                <p>Foi então que entendeu.</p>
-                <p>Aquilo não passava de um jogo.</p>
-                <p>E, se o mundo era um tabuleiro, ele seria o jogador.</p>
-                <p>Sem levantar a voz, sem recorrer à violência ou demonstrar qualquer emoção, Sora passou a manipular todos ao seu redor. Utilizava as próprias crenças do culto para conduzi-los exatamente para onde desejava. Sempre que precisava convencer alguém, bastava lembrar que era o "presente enviado pelo Deus da Lua". Ninguém ousava questionar suas palavras. Aos poucos, deixou de apenas ser tratado como uma divindade e passou a agir como uma.</p>
+
+                <div class="citacao-destaque">
+                    <p><strong>Aquilo não passava de um jogo.</strong></p>
+                    <p>E, se o mundo era um tabuleiro, ele seria o jogador.</p>
+                </div>
+
+                <p>Sem levantar a voz, sem recorrer à violência ou demonstrar qualquer emoção, Sora passou a manipular todos ao seu redor. Utilizava as próprias crenças do culto para conduzi-los exatamente para onde desejava. Sempre que precisava convencer alguém, bastava lembrar que era o <strong>"presente enviado pelo Deus da Lua"</strong>. Ninguém ousava questionar suas palavras. Aos poucos, deixou de apenas ser tratado como uma divindade e passou a agir como uma.</p>
                 <p>Sua expressão, entretanto, jamais mudou.</p>
                 <p>Mesmo durante discursos, punições ou rituais, seu rosto permanecia completamente vazio, enquanto seus olhos frios encaravam todos como peças de um enorme tabuleiro de xadrez.</p>
+
                 <p>A única pessoa que permanecia constantemente ao seu lado era Akurashi.</p>
                 <p>Mesmo assim, a relação entre ambos nunca se tornou calorosa. Sora raramente conversava com ele além do necessário. Em vez disso, passou a utilizá-lo como sua espada. Sempre que algum cultista desobedecia suas ordens ou demonstrava qualquer sinal de dúvida, era Akurashi quem recebia a missão de aplicar o castigo. Nunca questionava. Apenas obedecia.</p>
-                <p>Para Sora, aquilo era natural.</p>
-                <p>Toda peça possuía uma função.</p>
-                <p>E Akurashi havia nascido para cumprir a sua.</p>
+
+                <div class="citacao-destaque">
+                    <p><strong>Toda peça possuía uma função.</strong></p>
+                    <p>E Akurashi havia nascido para cumprir a sua.</p>
+                </div>
 
                 <img src="sora_akurashi.png" alt="Sora e Akurashi" class="imagem-destaque" onerror="this.style.display='none'" />
 
                 <p>Apesar de exercer cada vez mais influência sobre o culto, seu verdadeiro interesse nunca esteve no poder.</p>
                 <p>Era o conhecimento.</p>
-                <p>Sua curiosidade infantil jamais desapareceu. Pelo contrário, apenas cresceu. Passava dias inteiros estudando livros antigos, manuscritos esquecidos e qualquer registro que pudesse encontrar. Queria compreender o funcionamento do mundo, descobrir a origem das estrelas e entender por que havia caído dos céus. Durante suas pesquisas, encontrou diversas referências a algo chamado magia. A partir daquele momento, esse tornou-se seu novo objetivo.</p>
+                <p>Sua curiosidade infantil jamais desapareceu. Pelo contrário, apenas cresceu. Passava dias inteiros estudando livros antigos, manuscritos esquecidos e qualquer registro que pudesse encontrar. Queria compreender o funcionamento do mundo, descobrir a origem das estrelas e entender por que havia caído dos céus. Durante suas pesquisas, encontrou diversas referências a algo chamado <strong>magia</strong>. A partir daquele momento, esse tornou-se seu novo objetivo.</p>
                 <p>Se existia um poder capaz de explicar sua existência, ele o encontraria.</p>
 
                 <p>Aos quatorze anos, outra informação chegou até o culto.</p>
@@ -411,6 +584,11 @@
 
                 <p>A guerra era apenas uma questão de tempo.</p>
                 <p>E ela finalmente chegou.</p>
+
+                <div class="citacao-destaque">
+                    <p><strong>⚔️ A última batalha</strong></p>
+                </div>
+
                 <p>Durante uma noite de lua cheia, enquanto o culto realizava mais uma cerimônia na floresta, um assobio cortou o silêncio.</p>
                 <p>Em seguida, dezenas de flechas surgiram entre as árvores.</p>
                 <p>Os gritos começaram imediatamente.</p>
@@ -435,47 +613,67 @@
                 <p>"Corra!"</p>
                 <p>Sora não respondeu.</p>
                 <p>Apenas analisou a situação.</p>
-                <p>Se Akurashi permanecesse ali, provavelmente morreria.</p>
-                <p>Mas isso não importava.</p>
-                <p>Peças existem para serem sacrificadas quando necessário.</p>
+
+                <div class="citacao-destaque">
+                    <p>Se Akurashi permanecesse ali, provavelmente morreria.</p>
+                    <p>Mas isso não importava.</p>
+                    <p><strong>Peças existem para serem sacrificadas quando necessário.</strong></p>
+                </div>
+
                 <p>Sem hesitar por um único instante, Sora virou as costas e correu.</p>
                 <p>Correu o mais rápido que conseguia, deixando para trás os gritos, o som das espadas e o destino de Akurashi.</p>
                 <p>Naquela noite, pela primeira vez desde que caiu dos céus...</p>
-                <p style="text-align: center; font-size: 1.2rem; color: #a78bfa; margin-top: 1rem;"><strong>Sora entrou em contato com o mundo além do culto.</strong></p>
+
+                <div class="citacao-destaque">
+                    <p style="font-size: 1.2rem; color: #a78bfa;"><strong>Sora entrou em contato com o mundo além do culto.</strong></p>
+                </div>
             </div>
         </section>
 
-        <!-- ===================== ATO IV ===================== -->
+        <!-- ============================================================
+           ATO IV — REGULUS
+        ============================================================ -->
         <section class="fade-in delay-4">
             <h2>Ato IV — Regulus</h2>
             <div class="texto-justificado">
                 <p>Mesmo ferido pela flecha, Sora continuou caminhando. A dor não o incomodava.</p>
                 <p>Era apenas uma informação.</p>
                 <p>Seu corpo dizia que deveria parar, mas sua mente continuava repetindo a mesma ordem.</p>
-                <p style="text-align: center; font-size: 1.2rem; color: #a78bfa; margin: 1rem 0;"><strong>Viva.</strong></p>
+
+                <div class="citacao-destaque">
+                    <p style="font-size: 1.3rem; color: #a78bfa;"><strong>Viva.</strong></p>
+                </div>
+
                 <p>Depois de horas atravessando a floresta, finalmente encontrou uma cidade.</p>
                 <p>Era completamente diferente do culto.</p>
                 <p>Ali ninguém rezava para ele.</p>
                 <p>Ninguém abaixava a cabeça.</p>
                 <p>Era apenas mais um garoto sujo caminhando pelas ruas.</p>
                 <p>Sora passou os primeiros dias escondido. Roubava pequenos pedaços de pão durante a madrugada, observava as pessoas pelas janelas e escutava conversas nas tavernas. Quanto mais via aquele lugar, mais entendia como funcionava a sociedade.</p>
-                <p>Dinheiro.</p>
-                <p>Poder.</p>
-                <p>Influência.</p>
-                <p>Não importava quem estava certo.</p>
-                <p>Importava quem possuía mais.</p>
-                <p>Percebeu comerciantes enganando clientes, nobres comprando soldados para esconder crimes, religiosos vendendo falsas esperanças em troca de moedas e crianças sendo abandonadas nas ruas enquanto adultos fingiam não enxergá-las.</p>
+
+                <div class="citacao-destaque">
+                    <p>Dinheiro.</p>
+                    <p>Poder.</p>
+                    <p>Influência.</p>
+                    <p>Não importava quem estava certo.</p>
+                    <p><strong>Importava quem possuía mais.</strong></p>
+                </div>
 
                 <img src="sora_cidade.png" alt="Sora na cidade" class="imagem-destaque" onerror="this.style.display='none'" />
 
+                <p>Percebeu comerciantes enganando clientes, nobres comprando soldados para esconder crimes, religiosos vendendo falsas esperanças em troca de moedas e crianças sendo abandonadas nas ruas enquanto adultos fingiam não enxergá-las.</p>
                 <p>Aquilo era diferente do culto.</p>
                 <p>Mas, ao mesmo tempo...</p>
                 <p>Era exatamente igual. Todos apenas acreditavam em deuses diferentes. Enquanto uns adoravam uma lua...</p>
                 <p>Outros adoravam ouro, status, medo.</p>
                 <p>Apenas mudavam os nomes, as correntes continuavam existindo.</p>
                 <p>Foi naquele momento que Sora compreendeu algo.</p>
-                <p>A sociedade precisava acreditar em alguma mentira para continuar vivendo.</p>
-                <p>E essa mentira podia ser criada.</p>
+
+                <div class="citacao-destaque">
+                    <p><strong>A sociedade precisava acreditar em alguma mentira para continuar vivendo.</strong></p>
+                    <p>E essa mentira podia ser criada.</p>
+                </div>
+
                 <p>Se as pessoas eram tão facilmente manipuladas por palavras, símbolos e promessas...</p>
                 <p>Então o mundo inteiro era manipulável.</p>
                 <p>Durante meses, Sora caminhou entre cidades, observando reis, sacerdotes, mercadores e criminosos. Sempre permanecia em silêncio. Fazia perguntas, aprendia novos idiomas, estudava política, economia, estratégias militares e qualquer livro que encontrasse.</p>
@@ -483,25 +681,35 @@
                 <p>Assim como seu desprezo.</p>
                 <p>Quanto mais aprendia sobre os seres...</p>
                 <p>Menos conseguia respeitá-los.</p>
-                <p>Todos diziam buscar justiça.</p>
-                <p>Mas vendiam justiça.</p>
-                <p>Todos diziam proteger os fracos.</p>
-                <p>Mas exploravam os fracos.</p>
-                <p>Todos diziam amar seus deuses.</p>
-                <p>Mas matavam em seus nomes.</p>
-                <p>Ao perceber isso, Sora sorriu pela primeira vez.</p>
+
+                <div class="citacao-destaque">
+                    <p>Todos diziam buscar justiça.</p>
+                    <p>Mas vendiam justiça.</p>
+                    <p>Todos diziam proteger os fracos.</p>
+                    <p>Mas exploravam os fracos.</p>
+                    <p>Todos diziam amar seus deuses.</p>
+                    <p>Mas matavam em seus nomes.</p>
+                </div>
+
+                <p>Ao perceber isso, Sora <strong>sorriu pela primeira vez</strong>.</p>
                 <p>Não era um sorriso de felicidade, longe disso.. era o sorriso de alguém que finalmente encontrara uma resposta.</p>
-                <p style="text-align: center; font-size: 1.2rem; color: #a78bfa; margin: 1rem 0;"><strong>A sociedade era falha.</strong></p>
-                <p style="text-align: center; font-size: 1.2rem; color: #a78bfa; margin: 1rem 0;"><strong>E, se era falha...</strong></p>
-                <p style="text-align: center; font-size: 1.5rem; color: #a78bfa; margin: 1rem 0;"><strong>Podia ser destruída.</strong></p>
+
+                <div class="citacao-destaque">
+                    <p style="font-size: 1.3rem; color: #a78bfa;"><strong>A sociedade era falha.</strong></p>
+                    <p style="font-size: 1.3rem; color: #a78bfa;"><strong>E, se era falha...</strong></p>
+                    <p style="font-size: 1.8rem; color: #a78bfa;"><strong>Podia ser destruída.</strong></p>
+                </div>
 
                 <img src="sora_sorriso.png" alt="Sora sorrindo" class="imagem-destaque" onerror="this.style.display='none'" />
 
                 <p>Naquela noite, fez uma promessa apenas para si.</p>
-                <p style="text-align: center; font-size: 1.1rem; color: #a78bfa; margin: 1rem 0; font-style: italic;">"Um dia farei este mundo compreender o próprio erro."</p>
-                <p style="text-align: center; font-size: 1.1rem; color: #a78bfa; margin: 0.5rem 0; font-style: italic;">"Arrancarei todas as máscaras de todos."</p>
-                <p style="text-align: center; font-size: 1.1rem; color: #a78bfa; margin: 0.5rem 0; font-style: italic;">"E quando tudo terminar..."</p>
-                <p style="text-align: center; font-size: 1.3rem; color: #a78bfa; margin: 0.5rem 0; font-style: italic;">"Não restará ninguém para repetir os mesmos pecados."</p>
+
+                <div class="citacao-destaque" style="border: none; background: rgba(167,139,250,0.05); border-radius: 12px;">
+                    <p style="font-size: 1.1rem; color: #a78bfa; font-style: italic;">"Um dia farei este mundo compreender o próprio erro."</p>
+                    <p style="font-size: 1.1rem; color: #a78bfa; font-style: italic;">"Arrancarei todas as máscaras de todos."</p>
+                    <p style="font-size: 1.1rem; color: #a78bfa; font-style: italic;">"E quando tudo terminar..."</p>
+                    <p style="font-size: 1.3rem; color: #a78bfa; font-style: italic;">"Não restará ninguém para repetir os mesmos pecados."</p>
+                </div>
 
                 <p>Entretanto, seu corpo já havia ultrapassado o próprio limite. A flecha que o atingira meses antes nunca recebera tratamento adequado. A infecção havia se espalhado lentamente, consumindo-o por dentro enquanto ele ignorava completamente os sinais.</p>
                 <p>Certa noite, enquanto caminhava por uma estrada vazia, suas pernas finalmente cederam.</p>
@@ -511,18 +719,20 @@
                 <p>As estrelas permaneciam exatamente onde estavam… Indiferentes.</p>
                 <p>Ele estendeu lentamente a mão em direção às Plêiades.</p>
                 <p>Não para pedir ajuda. Mas porque ainda não havia encontrado todas as respostas.</p>
-                <p>Seu último pensamento não foi sobre Akurashi.</p>
-                <p>Nem sobre o culto.</p>
-                <p style="text-align: center; font-size: 1.2rem; color: #a78bfa; margin: 1rem 0; font-style: italic;">"Ainda não terminei."</p>
+
+                <div class="citacao-destaque">
+                    <p style="font-size: 1.2rem; color: #a78bfa; font-style: italic;">"Ainda não terminei."</p>
+                </div>
+
                 <p>Seu braço caiu lentamente.</p>
                 <p>A respiração cessou.</p>
-                <p style="text-align: center; font-size: 1.3rem; color: #a78bfa; margin: 1.5rem 0;"><strong>O garoto que havia caído das estrelas morreu sem concluir seu objetivo.</strong></p>
+
+                <div class="citacao-destaque" style="border: none; background: rgba(167,139,250,0.08); border-radius: 12px; padding: 2rem;">
+                    <p style="font-size: 1.3rem; color: #d4c0f0;"><strong>O garoto que havia caído das estrelas morreu sem concluir seu objetivo.</strong></p>
+                </div>
             </div>
         </section>
 
-        <!-- ============================================================
-           RODAPÉ
-        ============================================================ -->
         <div class="footer-simbolo">
             ⋆°.☾⋆.ೃ࿔*:⋆ ⋆°.☾⋆.ೃ࿔*:⋆ ⋆°.☾⋆.ೃ࿔*:⋆
         </div>
@@ -534,6 +744,9 @@
     </div>
 
     <script>
+        // ============================================================
+        // ESTRELAS CADENTES
+        // ============================================================
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
         let W, H;
@@ -625,6 +838,9 @@
         }
         drawStars();
 
+        // ============================================================
+        // MÚSICA DE FUNDO
+        // ============================================================
         const musicBtn = document.getElementById('musicBtn');
         let audioFundo = null;
         let isPlayingFundo = false;
@@ -663,6 +879,7 @@
         }, { once: true });
 
         console.log('⭐ Sora Kuuhaku — página carregada.');
+        console.log('🌌 Nebulosa roxa ativada.');
     </script>
 </body>
 </html>
