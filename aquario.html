@@ -24,9 +24,6 @@
             overflow-x: hidden;
         }
 
-        /* ============================================================
-           FUNDO — ESTRELAS CADENTES (MANTIDO)
-        ============================================================ */
         #stars-canvas {
             position: fixed;
             top: 0;
@@ -37,9 +34,6 @@
             pointer-events: none;
         }
 
-        /* ============================================================
-           CONTAINER PRINCIPAL
-        ============================================================ */
         .container {
             position: relative;
             z-index: 1;
@@ -48,9 +42,6 @@
             padding: 2rem 1.5rem 4rem;
         }
 
-        /* ============================================================
-           HERO — TÍTULO COM EFEITO DE BRILHO
-        ============================================================ */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -110,9 +101,6 @@
             font-style: normal;
         }
 
-        /* ============================================================
-           SEÇÕES
-        ============================================================ */
         section {
             margin: 4rem 0;
             padding: 2rem 0;
@@ -164,9 +152,6 @@
             opacity: 0.3;
         }
 
-        /* ============================================================
-           SOBRE — GRID MELHORADO
-        ============================================================ */
         .sobre-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -185,13 +170,6 @@
             text-align: justify;
             font-size: 1.05rem;
             color: #d4d0d0;
-        }
-
-        .sobre-texto p::first-letter {
-            font-size: 1.6rem;
-            color: #7a9cff;
-            font-weight: 700;
-            font-family: 'Cinzel', serif;
         }
 
         .sobre-detalhes {
@@ -233,9 +211,6 @@
             letter-spacing: 0.05em;
         }
 
-        /* ============================================================
-           CAPÍTULOS — CARD COM EFEITO GLASSMORPHISM
-        ============================================================ */
         .capitulo-card {
             background: rgba(10, 8, 18, 0.5);
             border-radius: 20px;
@@ -318,9 +293,6 @@
             color: #7a9cff;
         }
 
-        /* ============================================================
-           CONTEÚDO DO CAPÍTULO
-        ============================================================ */
         .capitulo-body {
             max-height: 0;
             overflow: hidden;
@@ -390,9 +362,6 @@
             font-family: 'Cinzel', serif;
         }
 
-        /* ============================================================
-           BOTÕES
-        ============================================================ */
         .btn-musica {
             display: inline-block;
             margin: 1rem 0 0.5rem;
@@ -540,9 +509,6 @@
             box-shadow: 0 8px 30px rgba(180, 150, 200, 0.08);
         }
 
-        /* ============================================================
-           RODAPÉ
-        ============================================================ */
         .footer-simbolo {
             text-align: center;
             font-size: 1.2rem;
@@ -581,9 +547,6 @@
             box-shadow: 0 0 30px rgba(180, 150, 200, 0.1);
         }
 
-        /* ============================================================
-           ANIMAÇÕES DE ENTRADA
-        ============================================================ */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
@@ -608,7 +571,6 @@
             animation-delay: 1s;
         }
 
-        /* Scrollbar personalizada */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -639,9 +601,6 @@
             </p>
         </header>
 
-        <!-- ============================================================
-           SOBRE
-        ============================================================ -->
         <section class="fade-in delay-1">
             <h2>Sobre</h2>
             <div class="sobre-grid">
@@ -650,14 +609,15 @@
                     <p>Em outra região, distante de qualquer vilarejo, existia uma floresta. Poucos se aproximavam daquele lugar durante a noite. As árvores bloqueavam boa parte da luz da lua, tornando aquele um ótimo lugar para se esconder, de fato.</p>
                     <p>Entretanto, todas as noites, seres encapuzados por mantos escuros dirigiam-se em direção à floresta. Aquilo era algo comum para eles, uma rotina, e naquela noite não seria diferente.</p>
                 </div>
+
                 <div class="sobre-detalhes">
                     <ul>
                         <li><span class="detalhe-label">Nascimento</span> 21/01/???</li>
                         <li><span class="detalhe-label">Fobia</span> Hafefobia (medo de contato físico)</li>
-                        <li><span class="detalhe-label">Gosta</span> Lua, livros, noite</li>
-                        <li><span class="detalhe-label">Odeia</span> Vegetais</li>
-                        <li><span class="detalhe-label">Personalidade</span> Frio, insensível, calmo, arrogante e vingativo</li>
-                        <li><span class="detalhe-label">Aparência</span> Cabelos brancos, pele pálida, olhos frios, venda no rosto</li>
+                        <li><span class="detalhe-label">Gosta</span> Observar a lua, ler livros e caminhar à noite. Valoriza sua paz e não gosta de ser interrompido.</li>
+                        <li><span class="detalhe-label">Odeia</span> Vegetais, pessoas que falam mais que o necessário</li>
+                        <li><span class="detalhe-label">Personalidade</span> Frio, insensível e calmo. Na maioria das vezes demonstra arrogância e guarda um forte desejo de vingança contra quem o prejudica.</li>
+                        <li><span class="detalhe-label">Aparência</span> Cabelos brancos como neve, pele pálida, olhos estreitos e frios. Possui traços delicados e um físico comum. Utiliza um tapa-olho.</li>
                     </ul>
                 </div>
             </div>
@@ -669,13 +629,10 @@
             </div>
         </section>
 
-        <!-- ============================================================
-           CAPÍTULOS
-        ============================================================ -->
         <section class="fade-in delay-2">
             <h2>Capítulos</h2>
 
-            <!-- ===================== CAPÍTULO I ===================== -->
+            <!-- CAPÍTULO I -->
             <div class="capitulo-card" id="capitulo1">
                 <div class="capitulo-header">
                     <img src="https://setemargens.com/wp-content/uploads/2020/12/bele%CC%81m-2-e1607652843266.jpg" alt="Estrela de Belém" loading="lazy" />
@@ -748,7 +705,7 @@
                 </div>
             </div>
 
-            <!-- ===================== CAPÍTULO II ===================== -->
+            <!-- CAPÍTULO II -->
             <div class="capitulo-card" id="capitulo2">
                 <div class="capitulo-header">
                     <img src="https://www.star-facts.com/wp-content/uploads/2019/09/Alnilam-Epsilon-Orionis-1.webp" alt="Alnilam" loading="lazy" />
@@ -805,7 +762,7 @@
                 </div>
             </div>
 
-            <!-- ===================== CAPÍTULO III ===================== -->
+            <!-- CAPÍTULO III -->
             <div class="capitulo-card" id="capitulo3">
                 <div class="capitulo-header">
                     <img src="https://www.ovnihoje.com/wp-content/uploads/2020/05/kachina.jpg" alt="Kachina" loading="lazy" />
@@ -850,9 +807,6 @@
 
         </section>
 
-        <!-- ============================================================
-           RODAPÉ
-        ============================================================ -->
         <div class="footer-simbolo">
             ⋆°.☾⋆.ೃ࿔*:⋆ ⋆°.☾⋆.ೃ࿔*:⋆ ⋆°.☾⋆.ೃ࿔*:⋆
         </div>
@@ -865,7 +819,7 @@
 
     <script>
         // ============================================================
-        // ESTRELAS CADENTES (MANTIDO)
+        // ESTRELAS CADENTES
         // ============================================================
         const canvas = document.getElementById('stars-canvas');
         const ctx = canvas.getContext('2d');
