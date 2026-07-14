@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 
     <style>
         * {
@@ -24,6 +24,9 @@
             overflow-x: hidden;
         }
 
+        /* ============================================================
+           FUNDO — OCEANO NOTURNO COM ONDAS E BOLHAS
+        ============================================================ */
         #stars-canvas {
             position: fixed;
             top: 0;
@@ -32,6 +35,62 @@
             height: 100vh;
             z-index: 0;
             pointer-events: none;
+        }
+
+        #oceano-fundo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 30% 40%, rgba(20, 80, 100, 0.15), transparent 60%),
+                        radial-gradient(ellipse at 70% 60%, rgba(10, 60, 80, 0.10), transparent 50%),
+                        radial-gradient(ellipse at 50% 80%, rgba(30, 100, 120, 0.08), transparent 50%);
+            animation: ondasMar 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes ondasMar {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-15px) scale(1.03);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(10px) scale(0.97);
+                opacity: 0.7;
+            }
+        }
+
+        /* Bolhas */
+        .bolha {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(102, 204, 153, 0.15), rgba(102, 204, 153, 0.02));
+            pointer-events: none;
+            z-index: 0;
+            animation: subirBolha 15s linear infinite;
+        }
+
+        @keyframes subirBolha {
+            0% {
+                transform: translateY(100vh) scale(0.3);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2);
+                opacity: 0;
+            }
         }
 
         .container {
@@ -50,26 +109,50 @@
             align-items: center;
             text-align: center;
             padding: 2rem 0;
+            position: relative;
         }
 
         .hero h1 {
             font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: clamp(2.8rem, 10vw, 5.5rem);
-            color: #66cc99;
-            text-shadow: 0 0 40px rgba(102, 204, 153, 0.25);
+            font-weight: 900;
+            font-size: clamp(3rem, 10vw, 5.5rem);
+            color: #88ddbb;
+            text-shadow: 0 0 40px rgba(102, 204, 153, 0.25), 0 0 80px rgba(102, 204, 153, 0.1);
             letter-spacing: 0.1em;
             margin-bottom: 0.5rem;
+            animation: tituloBrilho 4s ease-in-out infinite;
+        }
+
+        @keyframes tituloBrilho {
+            0%,
+            100% {
+                text-shadow: 0 0 40px rgba(102, 204, 153, 0.2), 0 0 80px rgba(102, 204, 153, 0.1);
+            }
+            50% {
+                text-shadow: 0 0 60px rgba(102, 204, 153, 0.4), 0 0 120px rgba(102, 204, 153, 0.2);
+            }
         }
 
         .hero .subtitle {
             font-size: clamp(1rem, 2.5vw, 1.4rem);
-            color: #b8aed0;
+            color: #b8d0c0;
             font-style: italic;
             max-width: 700px;
-            border-top: 1px solid rgba(180, 150, 200, 0.15);
+            border-top: 1px solid rgba(102, 204, 153, 0.15);
             padding-top: 1rem;
             margin-top: 0.5rem;
+            position: relative;
+        }
+
+        .hero .subtitle::before {
+            content: '✦';
+            position: absolute;
+            top: -0.6rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #66cc99;
+            font-size: 0.8rem;
+            opacity: 0.6;
         }
 
         .hero .subtitle strong {
@@ -80,30 +163,59 @@
         section {
             margin: 4rem 0;
             padding: 2rem 0;
-            border-bottom: 1px solid rgba(180, 150, 200, 0.06);
+            border-bottom: 1px solid rgba(102, 204, 153, 0.06);
+            position: relative;
         }
         section:last-of-type {
             border-bottom: none;
         }
 
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(102, 204, 153, 0.1), transparent);
+        }
+
         h2 {
             font-family: 'Cinzel', serif;
+            font-weight: 700;
             font-size: 2rem;
-            color: #66cc99;
+            color: #88ddbb;
             letter-spacing: 0.05em;
             margin-bottom: 2rem;
             text-align: center;
+            position: relative;
         }
+
         h2::after {
             content: ' ✦';
-            color: #b8aed0;
+            color: #66cc99;
             font-size: 1.2rem;
+            opacity: 0.6;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #66cc99, transparent);
+            opacity: 0.3;
         }
 
         .perfil-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: 2.5rem;
+            margin-top: 1rem;
         }
         @media (max-width: 700px) {
             .perfil-grid {
@@ -113,10 +225,18 @@
         }
 
         .perfil-card {
-            background: rgba(20, 15, 30, 0.6);
+            background: rgba(10, 25, 30, 0.6);
             padding: 1.5rem 2rem;
-            border-radius: 12px;
+            border-radius: 16px;
             border-left: 3px solid #66cc99;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .perfil-card:hover {
+            border-left-color: #88ddbb;
+            box-shadow: 0 0 30px rgba(102, 204, 153, 0.05);
+            transform: translateY(-2px);
         }
 
         .perfil-card h3 {
@@ -133,10 +253,14 @@
 
         .perfil-card li {
             padding: 0.3rem 0;
-            border-bottom: 1px solid rgba(180, 150, 200, 0.05);
+            border-bottom: 1px solid rgba(102, 204, 153, 0.06);
+            transition: all 0.3s ease;
         }
         .perfil-card li:last-child {
             border-bottom: none;
+        }
+        .perfil-card li:hover {
+            padding-left: 0.5rem;
         }
 
         .perfil-card .destaque {
@@ -148,61 +272,314 @@
             width: 100%;
             max-height: 400px;
             object-fit: cover;
-            border-radius: 12px;
+            border-radius: 14px;
             margin: 1.5rem 0;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .imagem-destaque:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 50px rgba(102, 204, 153, 0.1);
         }
 
         .texto-justificado p {
             margin-bottom: 1rem;
             text-align: justify;
+            font-size: 1.05rem;
+            color: #d0d8d0;
         }
 
-        .citacao {
+        .texto-justificado p strong {
+            color: #66cc99;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+        }
+
+        .citacao-destaque {
             font-style: italic;
-            color: #b8aed0;
+            color: #b8d0c0;
             text-align: center;
             padding: 1.5rem 0;
-            border-top: 1px solid rgba(180, 150, 200, 0.08);
-            border-bottom: 1px solid rgba(180, 150, 200, 0.08);
-            margin: 2rem 0;
+            border-top: 1px solid rgba(102, 204, 153, 0.08);
+            border-bottom: 1px solid rgba(102, 204, 153, 0.08);
+            margin: 1.5rem 0;
             font-size: 1.1rem;
+            transition: all 0.3s ease;
         }
 
-        .citacao strong {
+        .citacao-destaque:hover {
+            color: #d0e8d0;
+            border-color: rgba(102, 204, 153, 0.2);
+        }
+
+        .citacao-destaque strong {
             color: #66cc99;
             font-style: normal;
+            font-family: 'Cinzel', serif;
         }
 
         .btn-voltar {
             display: inline-block;
             margin-top: 2.5rem;
             padding: 0.8rem 2.5rem;
-            background: rgba(102, 204, 153, 0.08);
-            border: 1px solid rgba(102, 204, 153, 0.15);
-            border-radius: 30px;
+            background: rgba(102, 204, 153, 0.06);
+            border: 1px solid rgba(102, 204, 153, 0.12);
+            border-radius: 50px;
+            color: #66cc99;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-voltar:hover {
+            background: rgba(102, 204, 153, 0.12);
+            border-color: #66cc99;
+            color: #f0e6d0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 204, 153, 0.08);
+        }
+
+        .btn-cancer-music {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.8rem 2.8rem;
+            background: linear-gradient(135deg, rgba(102, 204, 153, 0.12), rgba(102, 204, 153, 0.04));
+            border: 1px solid rgba(102, 204, 153, 0.2);
+            border-radius: 50px;
             color: #66cc99;
             font-family: 'Cinzel', serif;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             text-decoration: none;
+            letter-spacing: 0.05em;
+            animation: pulsarBotao 2.5s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-voltar:hover {
-            background: rgba(102, 204, 153, 0.15);
+        .btn-cancer-music::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 204, 153, 0.05), transparent 50%);
+            animation: girarBrilho 8s linear infinite;
+        }
+
+        @keyframes girarBrilho {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .btn-cancer-music:hover {
+            background: linear-gradient(135deg, rgba(102, 204, 153, 0.2), rgba(102, 204, 153, 0.08));
             border-color: #66cc99;
             color: #f0e6d0;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(102, 204, 153, 0.15);
+        }
+
+        .btn-cancer-music.playing {
+            background: linear-gradient(135deg, rgba(199, 122, 122, 0.12), rgba(199, 122, 122, 0.04));
+            border-color: rgba(199, 122, 122, 0.2);
+            color: #c77a7a;
+        }
+
+        @keyframes pulsarBotao {
+            0%,
+            100% {
+                box-shadow: 0 0 10px rgba(102, 204, 153, 0.05);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(102, 204, 153, 0.15);
+            }
+        }
+
+        .capitulo-card {
+            background: rgba(10, 25, 30, 0.4);
+            border-radius: 20px;
+            border: 1px solid rgba(102, 204, 153, 0.06);
+            margin-bottom: 2.5rem;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+        }
+
+        .capitulo-card:hover {
+            border-color: rgba(102, 204, 153, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .capitulo-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            align-items: center;
+        }
+        @media (max-width: 700px) {
+            .capitulo-header {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 1.5rem;
+            }
+        }
+
+        .capitulo-header img {
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 14px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .capitulo-card:hover .capitulo-header img {
+            transform: scale(1.02);
+            box-shadow: 0 8px 50px rgba(102, 204, 153, 0.1);
+        }
+
+        .capitulo-header h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: #d4e0d4;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .capitulo-card:hover .capitulo-header h3 {
+            color: #66cc99;
+        }
+
+        .capitulo-header blockquote {
+            font-style: italic;
+            color: #b8d0c0;
+            border-left: 3px solid #66cc99;
+            padding-left: 1.2rem;
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        .capitulo-header .abrir-indicador {
+            display: inline-block;
+            margin-top: 0.8rem;
+            font-size: 0.75rem;
+            color: #6a7f7a;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            font-family: 'Cinzel', serif;
+        }
+
+        .capitulo-card:hover .abrir-indicador {
+            color: #66cc99;
+        }
+
+        .capitulo-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding 0.4s ease;
+            padding: 0 2rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid transparent;
+        }
+
+        .capitulo-body.aberto {
+            max-height: 8000px;
+            padding: 2rem;
+            border-top-color: rgba(102, 204, 153, 0.08);
+        }
+
+        .capitulo-body .texto {
+            text-align: justify;
+            margin-bottom: 1.5rem;
+        }
+        .capitulo-body .texto p {
+            margin-bottom: 1rem;
+            font-size: 1.02rem;
+            color: #d0d8d0;
+        }
+
+        .capitulo-body .texto p strong {
+            color: #66cc99;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+        }
+
+        .capitulo-body .imagem-destaque {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 14px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .capitulo-body .imagem-destaque:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 50px rgba(102, 204, 153, 0.1);
+        }
+
+        .btn-proximo {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.7rem 2.5rem;
+            background: rgba(102, 204, 153, 0.06);
+            border: 1px solid rgba(102, 204, 153, 0.12);
+            border-radius: 50px;
+            color: #b8d0c0;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            text-decoration: none;
+            border: none;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-proximo:hover {
+            background: rgba(102, 204, 153, 0.12);
+            border-color: #66cc99;
+            color: #f0e6d0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 204, 153, 0.08);
+        }
+
+        .btn-proximo.fim {
+            opacity: 0.5;
+            cursor: default;
+        }
+        .btn-proximo.fim:hover {
+            background: rgba(102, 204, 153, 0.06);
+            border-color: rgba(102, 204, 153, 0.12);
+            color: #b8d0c0;
+            transform: none;
+            box-shadow: none;
         }
 
         .footer-simbolo {
             text-align: center;
             font-size: 1.2rem;
             letter-spacing: 0.2em;
-            color: #4a3f5a;
-            margin-top: 3rem;
+            color: #4a5f5a;
+            margin-top: 4rem;
             padding-top: 2rem;
-            border-top: 1px solid rgba(180, 150, 200, 0.06);
+            border-top: 1px solid rgba(102, 204, 153, 0.06);
+            opacity: 0.6;
         }
 
         .music-control {
@@ -210,30 +587,32 @@
             bottom: 2rem;
             right: 2rem;
             z-index: 10;
-            background: rgba(20, 15, 30, 0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(10, 25, 30, 0.7);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(180, 150, 200, 0.15);
             color: #d4c8e8;
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             font-size: 1.4rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
+
         .music-control:hover {
-            background: rgba(40, 30, 60, 0.9);
-            border-color: #b8aed0;
-            transform: scale(1.08);
+            background: rgba(20, 40, 50, 0.9);
+            border-color: #66cc99;
+            transform: scale(1.08) rotate(8deg);
+            box-shadow: 0 0 30px rgba(102, 204, 153, 0.1);
         }
 
         .fade-in {
             opacity: 0;
-            transform: translateY(25px);
-            animation: fadeUp 1s ease forwards;
+            transform: translateY(30px);
+            animation: fadeUp 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
         @keyframes fadeUp {
             to {
@@ -254,168 +633,28 @@
             animation-delay: 1s;
         }
 
-        .capitulo-card {
-            background: rgba(10, 8, 18, 0.5);
-            border-radius: 16px;
-            border: 1px solid rgba(180, 150, 200, 0.06);
-            margin-bottom: 2rem;
-            overflow: hidden;
-            transition: border-color 0.4s ease;
-            cursor: pointer;
+        ::-webkit-scrollbar {
+            width: 6px;
         }
-        .capitulo-card:hover {
-            border-color: rgba(180, 150, 200, 0.2);
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
         }
-
-        .capitulo-header {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            padding: 1.5rem;
-            align-items: center;
-        }
-        @media (max-width: 700px) {
-            .capitulo-header {
-                grid-template-columns: 1fr;
-                text-align: center;
-                padding: 1.2rem;
-            }
-        }
-
-        .capitulo-header img {
-            width: 100%;
-            height: auto;
-            max-height: 200px;
-            object-fit: cover;
+        ::-webkit-scrollbar-thumb {
+            background: rgba(102, 204, 153, 0.3);
             border-radius: 10px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
-
-        .capitulo-header h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.6rem;
-            color: #d4c8e8;
-            margin-bottom: 0.5rem;
-        }
-        .capitulo-header blockquote {
-            font-style: italic;
-            color: #b8aed0;
-            border-left: 3px solid #66cc99;
-            padding-left: 1.2rem;
-            font-size: 0.95rem;
-        }
-        .capitulo-header .abrir-indicador {
-            display: inline-block;
-            margin-top: 0.8rem;
-            font-size: 0.8rem;
-            color: #6a5f7a;
-            letter-spacing: 0.1em;
-        }
-
-        .capitulo-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding 0.4s ease;
-            padding: 0 1.5rem;
-            background: rgba(0, 0, 0, 0.2);
-            border-top: 1px solid transparent;
-        }
-        .capitulo-body.aberto {
-            max-height: 8000px;
-            padding: 2rem 1.5rem;
-            border-top-color: rgba(180, 150, 200, 0.08);
-        }
-
-        .capitulo-body .texto {
-            text-align: justify;
-            margin-bottom: 1.5rem;
-        }
-        .capitulo-body .texto p {
-            margin-bottom: 1rem;
-        }
-
-        .capitulo-body .imagem-destaque {
-            width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin: 1.5rem 0;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .btn-proximo {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.6rem 2rem;
-            background: rgba(180, 150, 200, 0.08);
-            border: 1px solid rgba(180, 150, 200, 0.15);
-            border-radius: 30px;
-            color: #b8aed0;
-            font-family: 'Cinzel', serif;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            border: none;
-        }
-        .btn-proximo:hover {
-            background: rgba(180, 150, 200, 0.15);
-            border-color: #b8aed0;
-            color: #f0e6d0;
-        }
-        .btn-proximo.fim {
-            opacity: 0.5;
-            cursor: default;
-        }
-        .btn-proximo.fim:hover {
-            background: rgba(180, 150, 200, 0.08);
-            border-color: rgba(180, 150, 200, 0.15);
-            color: #b8aed0;
-        }
-
-        .btn-cancer-music {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2.5rem;
-            background: rgba(102, 204, 153, 0.12);
-            border: 1px solid rgba(102, 204, 153, 0.2);
-            border-radius: 30px;
-            color: #66cc99;
-            font-family: 'Cinzel', serif;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            animation: pulsarBotao 3s ease-in-out infinite;
-        }
-
-        .btn-cancer-music:hover {
-            background: rgba(102, 204, 153, 0.2);
-            border-color: #66cc99;
-            color: #f0e6d0;
-            transform: scale(1.05);
-        }
-
-        .btn-cancer-music.playing {
-            background: rgba(199, 122, 122, 0.12);
-            border-color: rgba(199, 122, 122, 0.2);
-            color: #c77a7a;
-        }
-
-        @keyframes pulsarBotao {
-            0%,
-            100% {
-                box-shadow: 0 0 10px rgba(102, 204, 153, 0.1);
-            }
-            50% {
-                box-shadow: 0 0 30px rgba(102, 204, 153, 0.3);
-            }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(102, 204, 153, 0.5);
         }
     </style>
 </head>
 <body>
 
+    <div id="oceano-fundo"></div>
     <canvas id="stars-canvas"></canvas>
+
+    <!-- Bolhas geradas por JavaScript -->
+    <div id="bolhas-container"></div>
 
     <button class="music-control" id="musicBtn" aria-label="Controle de música">🔊</button>
 
@@ -481,7 +720,11 @@
                         <p>Na manhã da despedida, caminhou até a ilha enquanto o vento trazia o cheiro salgado do mar. Mateo, com pouco mais de um ano, observava o céu e segurava com curiosidade uma antiga lamparina que sua mãe colocara em suas mãos. O objeto era simples, gasto pelo tempo, mas parecia transmitir um calor estranho e acolhedor.</p>
                         <p>A creche era modesta. Suas paredes de madeira carregavam marcas da maresia, e o piso rangia sob os passos das crianças que corriam pelo pátio. Ainda assim, havia vida em todos os cantos: o cheiro de pão recém-assado saía da cozinha, um grupo de pequenos Undynes brincava próximo ao poço, duas crianças Aetherions disputavam quem conseguia voar por mais tempo, enquanto uma menina Sylven regava cuidadosamente um jardim cheio de flores coloridas.</p>
                         <p>Quando a porta se abriu, uma das cuidadoras recebeu os dois com um sorriso sereno. A mãe de Mateo demorou a soltá-lo. Apertou suas pequenas mãos, ajeitou seus cabelos e, contendo as lágrimas, apenas sussurrou:</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você merece um mundo melhor do que eu posso lhe dar.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Você merece um mundo melhor do que eu posso lhe dar.</p>
+                        </div>
+
                         <p>Ela entregou o filho, mas não o abandonou por falta de amor. Deixou com ele a lamparina, um último pedaço de si mesma, e partiu sem olhar para trás, porque sabia que, se olhasse mais uma vez, nunca teria forças para ir embora.</p>
                         <p>Mateo chorou naquela primeira noite. Chorou até adormecer abraçado à lamparina, enquanto o som das ondas atravessava a janela do dormitório. Sem perceber, o oceano já começava a embalar a vida do menino que um dia seria conhecido em inúmeros mares.</p>
 
@@ -491,48 +734,102 @@
                         <p>Ele, porém, era diferente. Não fazia barulho, não corria sem motivo e raramente começava uma conversa. Preferia sentar perto da cerca voltada para o mar, segurando a lamparina enquanto observava navios cruzarem o horizonte. As cuidadoras diziam que parecia estar sempre ouvindo algo distante.</p>
                         <p>Foi numa tarde comum que Jun apareceu.</p>
                         <p>O garoto meio axolote surgiu correndo pelo pátio depois de perder uma corrida para duas crianças Aetherions. Parou ofegante diante de Mateo e ficou encarando o oceano por alguns segundos antes de perguntar:</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você também acha que o mar parece chamar a gente?</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Você também acha que o mar parece chamar a gente?</p>
+                        </div>
+
                         <p>Mateo demorou um pouco para responder.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Acho.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Ótimo. Então não sou maluco sozinho.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Acho.</p>
+                            <p>— Ótimo. Então não sou maluco sozinho.</p>
+                        </div>
+
                         <p>Jun sentou ao lado dele sem pedir permissão e apontou para a lamparina.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você leva isso pra todo lugar.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Ela é importante.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Por quê?</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Você leva isso pra todo lugar.</p>
+                            <p>— Ela é importante.</p>
+                            <p>— Por quê?</p>
+                        </div>
+
                         <p>Mateo olhou para o objeto nas próprias mãos.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Não sei explicar.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Não sei explicar.</p>
+                        </div>
+
                         <p>Jun sorriu.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então deve ser importante de verdade.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Então deve ser importante de verdade.</p>
+                        </div>
+
                         <p>A partir daquele dia, os dois passaram a dividir quase tudo. Exploravam a praia depois das tarefas, ouviam histórias de piratas contadas por um velho cozinheiro da creche e construíam pequenos barcos de madeira que quase nunca conseguiam flutuar direito. Enquanto as outras crianças sonhavam em se tornar mercadores, soldados ou aventureiros, Mateo e Jun sonhavam em navegar.</p>
                         <p>Mas o sonho deles era diferente.</p>
                         <p>Não queriam apenas riquezas.</p>
                         <p>Queriam uma família.</p>
                         <p>Numa noite em que o céu estava cheio de estrelas, os dois permaneceram sentados na areia observando o mar escuro.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Quando eu tiver um navio, ninguém vai ser rejeitado por causa da raça — disse Mateo.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Nem por causa do passado — completou Jun.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— E ninguém vai ficar sozinho.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então já temos uma tripulação.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Quando eu tiver um navio, ninguém vai ser rejeitado por causa da raça — disse Mateo.</p>
+                            <p>— Nem por causa do passado — completou Jun.</p>
+                            <p>— E ninguém vai ficar sozinho.</p>
+                            <p>— Então já temos uma tripulação.</p>
+                        </div>
+
                         <p>Mateo riu.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Só tem nós dois.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Toda família começa pequena.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Só tem nós dois.</p>
+                            <p>— Toda família começa pequena.</p>
+                        </div>
+
                         <p>Os anos transformaram crianças em jovens. Aos dezoito anos, a creche parecia menor do que antes, embora continuasse carregando o mesmo cheiro de pão fresco e maresia. As cuidadoras observavam os rapazes arrumando mochilas e cordas enquanto tentavam esconder a tristeza da despedida.</p>
                         <p>O navio que conseguiram era velho, cheio de reparos improvisados e velas desgastadas, mas para eles parecia a embarcação mais bonita do mundo. Mateo escolheu o nome: Come & Gulp.</p>
                         <p>No cais, antes de embarcar, a mulher que o acolhera quando bebê segurou seu rosto entre as mãos.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você cresceu bem, Mateo.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Foi porque nunca estive sozinho.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Você cresceu bem, Mateo.</p>
+                            <p>— Foi porque nunca estive sozinho.</p>
+                        </div>
+
                         <p>Jun apareceu carregando uma pilha de caixas e gritou do convés:</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Capitão! Se continuar se despedindo desse jeito, vamos perder a maré!</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Capitão! Se continuar se despedindo desse jeito, vamos perder a maré!</p>
+                        </div>
+
                         <p>Mateo olhou para a creche uma última vez. O jardim continuava florido, as janelas continuavam rangendo com o vento e o som das crianças ainda ecoava pelo pátio. Aquele lugar havia sido seu primeiro lar.</p>
                         <p>Ele segurou a lamparina, respirou fundo e subiu a prancha do navio.</p>
                         <p>Quando o Come & Gulp deixou o porto, o sol começava a nascer sobre o oceano. Mateo permaneceu na proa enquanto o vento agitava seus cabelos, e Jun ficou ao seu lado com o mesmo sorriso de sempre.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então, capitão... pra onde vamos?</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Então, capitão... pra onde vamos?</p>
+                        </div>
+
                         <p>Mateo observou o horizonte.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Pra casa.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Pra casa.</p>
+                        </div>
+
                         <p>Jun franziu a testa.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Mas a gente acabou de sair dela.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Mas a gente acabou de sair dela.</p>
+                        </div>
+
                         <p>Mateo sorriu pela primeira vez desde a despedida.</p>
-                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">— Não. A gente acabou de começar a construir outra.</p>
-                        <p style="text-align: center; color: #66cc99; font-size: 1.3rem; margin-top: 1rem;">E assim nasceram os Filhos das Marés.</p>
+
+                        <div class="citacao-destaque" style="font-size: 1.2rem; color: #66cc99;">
+                            <p><strong>— Não. A gente acabou de começar a construir outra.</strong></p>
+                        </div>
+
+                        <div class="citacao-destaque" style="font-size: 1.3rem; color: #88ddbb; border: none;">
+                            <p><strong>E assim nasceram os Filhos das Marés.</strong></p>
+                        </div>
                     </div>
                     <button class="btn-proximo" onclick="abrirCapitulo('capitulo2')">Próximo Capítulo →</button>
                 </div>
@@ -553,9 +850,13 @@
                         <p>Os primeiros meses no mar foram tudo, menos fáceis. O Come & Gulp era um navio antigo, comprado com economias reunidas durante anos pelas crianças da creche. Rangia a cada onda mais forte, deixava entrar água por pequenas frestas e obrigava sua tripulação a fazer reparos constantemente. Ainda assim, para Mateo e seus amigos, não existia embarcação mais bonita em todo o oceano.</p>
                         <p>Ali, pela primeira vez, eles eram livres.</p>
                         <p>A tripulação passou a ser conhecida como Filhos das Marés. Não eram famosos por sua força, nem pela quantidade de ouro que possuíam, mas pela maneira como navegavam. Enquanto outros piratas saqueavam qualquer embarcação que encontravam, Mateo havia criado três regras simples que jamais poderiam ser quebradas.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">Primeira: nunca roubar um irmão. Aquilo que um membro da tripulação conquistasse lhe pertenceria, a menos que decidisse compartilhar.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">Segunda: jamais tirar a vida de um inocente. Apenas criminosos ou aqueles que ameaçassem a vida de alguém responderiam por seus atos, principalmente aqueles que machucassem crianças.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">Terceira: fossem felizes.</p>
+
+                        <div class="citacao-destaque">
+                            <p><strong>Primeira:</strong> nunca roubar um irmão. Aquilo que um membro da tripulação conquistasse lhe pertenceria, a menos que decidisse compartilhar.</p>
+                            <p><strong>Segunda:</strong> jamais tirar a vida de um inocente. Apenas criminosos ou aqueles que ameaçassem a vida de alguém responderiam por seus atos, principalmente aqueles que machucassem crianças.</p>
+                            <p><strong>Terceira:</strong> fossem felizes.</p>
+                        </div>
+
                         <p>Muitos riam daquela última regra, dizendo que não fazia sentido existir em um bando pirata. Mateo apenas respondia que um navio cheio de pessoas infelizes nunca poderia ser chamado de família.</p>
                         <p>Os dias passaram a ser preenchidos por aventuras que nenhum deles imaginava viver. Navegaram entre ilhas escondidas, descobriram praias onde a areia brilhava sob a luz da lua, atravessaram tempestades violentas e conheceram povos de todas as raças. Em algumas cidades, eram recebidos com comida e música; em outras, precisavam fugir antes mesmo de colocar os pés em terra.</p>
 
@@ -565,16 +866,32 @@
                         <p>Nem todos os encontros com outros piratas terminavam em batalha. Sempre que avistavam uma bandeira desconhecida no horizonte, o Come & Gulp diminuía a velocidade. Se o outro navio também demonstrasse paz, as embarcações aproximavam-se lado a lado. Violões, tambores e flautas surgiam rapidamente, e a noite era tomada por músicas, histórias exageradas e competições sobre quem havia vivido a aventura mais absurda. Mateo adorava aqueles encontros. Dizia que o mar era grande demais para ser preenchido apenas por ódio.</p>
                         <p>Ao seu lado, Jun permanecia como o braço direito que qualquer capitão sonharia ter. Enquanto Mateo era calmo e refletia antes de agir, Jun era expansivo, fazia amizade com qualquer pessoa em poucos minutos e arrancava risadas até dos marinheiros mais sérios. Muitas vezes, bastava um olhar para que um entendesse exatamente o que o outro estava pensando.</p>
                         <p>Certa noite, sentados na proa do Come & Gulp, observavam o céu coberto de estrelas.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você já percebeu? — perguntou Jun.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— O quê?</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— A gente conseguiu.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Você já percebeu? — perguntou Jun.</p>
+                            <p>— O quê?</p>
+                            <p>— A gente conseguiu.</p>
+                        </div>
+
                         <p>Mateo olhou confuso.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— A família que sonhamos quando éramos crianças... ela está aqui.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— A família que sonhamos quando éramos crianças... ela está aqui.</p>
+                        </div>
+
                         <p>O capitão observou cada integrante do convés. Alguns jogavam cartas, outros cozinhavam, enquanto dois tripulantes discutiam quem desafinava mais ao cantar antigas canções de piratas.</p>
                         <p>Ele sorriu.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Conseguiu você. Eu só dei o primeiro passo.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Conseguiu você. Eu só dei o primeiro passo.</p>
+                        </div>
+
                         <p>Jun deu uma leve cotovelada em seu ombro.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Não... você deu um lar para todo mundo.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Não... você deu um lar para todo mundo.</p>
+                        </div>
+
                         <p>Mateo nunca esqueceu aquelas palavras.</p>
                         <p>Foi justamente quando acreditava que o futuro seria tranquilo que o destino resolveu provar o contrário.</p>
                         <p>Em uma tarde de céu fechado, uma gigantesca embarcação surgiu entre a neblina. Sua bandeira negra tremulava ao vento enquanto canhões eram apontados diretamente para o Come & Gulp. Não houve conversa. O primeiro disparo atravessou uma das velas, seguido por uma chuva de flechas incendiárias.</p>
@@ -582,19 +899,34 @@
                         <p>Os Filhos das Marés lutaram com tudo o que tinham. Mesmo em menor número, conseguiram enfrentar os invasores e proteger seus companheiros. Mateo avançava pela fumaça tentando apagar o incêndio quando um barril em chamas explodiu próximo ao mastro. Um pedaço de madeira atingiu violentamente seu rosto. O calor queimou parte de sua pele e seu olho esquerdo foi destruído no impacto.</p>
                         <p>Mesmo ferido, continuou lutando.</p>
                         <p>Jun correu até ele, retirando do bolso um velho tapa-olho de couro.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você ainda é o capitão mais bonito que eu conheço.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Você ainda é o capitão mais bonito que eu conheço.</p>
+                        </div>
+
                         <p>Mesmo em meio ao caos, Mateo riu.</p>
                         <p>Jun colocou o tapa-olho sobre o ferimento e sorriu.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Agora ficou melhor.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Agora ficou melhor.</p>
+                        </div>
+
                         <p>Antes que pudesse dizer qualquer outra coisa, uma espada atravessou seu peito.</p>
                         <p>O tempo pareceu parar.</p>
                         <p>Atrás dele estava um homem de barba escura, olhar frio e um sorriso cruel.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então esta é a famosa família de vocês? — disse ele, empurrando o corpo de Jun ao chão. — Que família fraca.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Então esta é a famosa família de vocês? — disse ele, empurrando o corpo de Jun ao chão. — Que família fraca.</p>
+                        </div>
+
                         <p>Mateo tentou alcançá-lo, mas o convés já não suportava o incêndio. As ondas tornaram-se violentas, como se o próprio oceano gritasse de dor. Em poucos segundos, o Come & Gulp começou a afundar, arrastando consigo também o navio inimigo.</p>
                         <p>Mateo foi lançado contra os destroços da própria embarcação. Bateu a cabeça uma, duas, três vezes. O mundo girou diante de seus olhos. O som das ondas tornou-se distante.</p>
                         <p>A última coisa que sentiu foi sua mão apertando instintivamente a velha lamparina que sempre carregava consigo.</p>
-                        <p>Depois disso...</p>
-                        <p style="text-align: center; color: #66cc99; font-size: 1.3rem; font-style: italic;">Apenas escuridão.</p>
+
+                        <div class="citacao-destaque" style="font-size: 1.3rem; color: #66cc99;">
+                            <p><strong>Depois disso...</strong></p>
+                            <p style="font-size: 1.5rem; color: #88ddbb;">Apenas escuridão.</p>
+                        </div>
                     </div>
                     <button class="btn-proximo" onclick="abrirCapitulo('capitulo3')">Próximo Capítulo →</button>
                 </div>
@@ -628,23 +960,55 @@
 
                         <p>A porta do quarto se abriu com rapidez.</p>
                         <p>Uma jovem usando vestes semelhantes às de uma freira entrou apressada ao perceber que ele havia despertado. Seus cabelos castanhos possuíam pequenos tons avermelhados, e duas orelhas fofas de panda-vermelho denunciavam sua origem Sylven.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você acordou... — disse ela, sorrindo aliviada. — Graças aos Pilares...</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Você acordou... — disse ela, sorrindo aliviada. — Graças aos Pilares...</p>
+                        </div>
+
                         <p>Ela aproximou-se devagar, verificando seus curativos antes de perguntar:</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Consegue me dizer seu nome?</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Consegue me dizer seu nome?</p>
+                        </div>
+
                         <p>O rapaz permaneceu em silêncio.</p>
                         <p>Depois de alguns segundos, respondeu quase envergonhado.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Eu... não sei.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Eu... não sei.</p>
+                        </div>
+
                         <p>Ela não demonstrou surpresa.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Não se lembra de nada?</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Não se lembra de nada?</p>
+                        </div>
+
                         <p>Ele apenas balançou a cabeça.</p>
                         <p>Ela permaneceu alguns instantes em silêncio antes de puxar uma cadeira e sentar ao lado da cama.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Meu nome é Alice. Você está seguro. Este lugar se chama A Maré do Primeiro Lar.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Meu nome é Alice. Você está seguro. Este lugar se chama A Maré do Primeiro Lar.</p>
+                        </div>
+
                         <p>O rapaz repetiu o nome baixinho, como se tentasse gravá-lo.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Eu encontrei você numa praia, há algumas semanas. Estava gravemente ferido... e cercado por dezenas de caranguejos.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Eu encontrei você numa praia, há algumas semanas. Estava gravemente ferido... e cercado por dezenas de caranguejos.</p>
+                        </div>
+
                         <p>Ele ergueu uma sobrancelha.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Caranguejos?</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Caranguejos?</p>
+                        </div>
+
                         <p>Alice sorriu.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Pareciam estar protegendo você. Nenhum deles permitia que alguém se aproximasse. Só foram embora quando conseguimos levá-lo para cá.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Pareciam estar protegendo você. Nenhum deles permitia que alguém se aproximasse. Só foram embora quando conseguimos levá-lo para cá.</p>
+                        </div>
+
                         <p>O rapaz olhou novamente para a lamparina.</p>
                         <p>Tudo aquilo parecia estranho.</p>
                         <p>Mas, curiosamente...</p>
@@ -657,19 +1021,39 @@
                         <p>Alice tornou-se sua companhia mais constante. Era ela quem trocava seus curativos, o acompanhava durante as caminhadas e lhe apresentava cada canto da igreja. Com o passar das semanas, ele também conheceu os demais moradores: pescadores aposentados, crianças órfãs acolhidas pelo templo, cozinheiras, jardineiros e religiosos que dedicavam seus dias a cuidar de quem precisava de ajuda.</p>
                         <p>Pouco a pouco, aquele lugar começou a parecer um lar.</p>
                         <p>Certa tarde, enquanto caminhavam pelo jardim, Alice perguntou:</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Ainda não encontrou um nome?</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Ainda não encontrou um nome?</p>
+                        </div>
+
                         <p>Ele ficou em silêncio.</p>
                         <p>Não existia resposta.</p>
                         <p>Apenas um vazio.</p>
                         <p>Ela sorriu delicadamente.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então... posso escolher um para você?</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Então... posso escolher um para você?</p>
+                        </div>
+
                         <p>Ele assentiu.</p>
                         <p>Alice olhou em direção ao mar antes de responder:</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você chegou até nós trazido pela maré... e é um Undyne. Acho que "Maré" combina com você.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Você chegou até nós trazido pela maré... e é um Undyne. Acho que <strong>"Maré"</strong> combina com você.</p>
+                        </div>
+
                         <p>Ele repetiu o nome em voz baixa.</p>
-                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">Maré.</p>
+
+                        <div class="citacao-destaque" style="font-size: 1.5rem; color: #66cc99;">
+                            <p><strong>Maré.</strong></p>
+                        </div>
+
                         <p>Pela primeira vez desde que despertara...</p>
-                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">Sentiu que pertencia a alguma coisa.</p>
+
+                        <div class="citacao-destaque" style="font-size: 1.2rem; color: #88ddbb;">
+                            <p><strong>Sentiu que pertencia a alguma coisa.</strong></p>
+                        </div>
+
                         <p>Desde então, todos passaram a chamá-lo assim.</p>
                         <p>Com o passar dos meses, Maré começou a ajudar na igreja. Cuidava do jardim, carregava caixas, ajudava na cozinha, auxiliava pescadores idosos a consertarem suas redes e brincava com as crianças que viviam ali. Não demorou para que seu jeito gentil conquistasse o carinho de todos.</p>
                         <p>Mas havia um lugar que se tornou especial.</p>
@@ -683,21 +1067,44 @@
                         <p>Nunca esperava uma resposta.</p>
                         <p>Ainda assim, saía dali sentindo-se mais leve.</p>
                         <p>Alice percebeu esse hábito antes de qualquer outra pessoa.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Você nunca faz pedidos.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Você nunca faz pedidos.</p>
+                        </div>
+
                         <p>Maré sorriu discretamente.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Acho que... amigos conversam.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Acho que... amigos conversam.</p>
+                        </div>
+
                         <p>Ela riu.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então é isso que Câncer é para você?</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Então é isso que Câncer é para você?</p>
+                        </div>
+
                         <p>Ele olhou para a estátua.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Não sei explicar.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Não sei explicar.</p>
+                        </div>
+
                         <p>Fez uma pequena pausa.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Mas quando converso aqui... sinto como se nunca estivesse sozinho.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Mas quando converso aqui... sinto como se nunca estivesse sozinho.</p>
+                        </div>
+
                         <p>Alice não respondeu.</p>
                         <p>Apenas sorriu.</p>
                         <p>Naquele instante, percebeu que o rapaz encontrado desacordado naquela praia já não era apenas alguém que precisava ser salvo.</p>
                         <p>Ele havia encontrado um novo motivo para viver.</p>
-                        <p style="text-align: center; color: #66cc99; font-size: 1.3rem; font-style: italic;">E, mesmo sem lembrar do próprio passado...</p>
-                        <p style="text-align: center; color: #66cc99; font-size: 1.3rem; font-style: italic;">Finalmente havia encontrado um lugar que podia chamar de lar.</p>
+
+                        <div class="citacao-destaque" style="font-size: 1.3rem; color: #88ddbb;">
+                            <p><strong>E, mesmo sem lembrar do próprio passado...</strong></p>
+                            <p style="font-size: 1.3rem; color: #66cc99;"><strong>Finalmente havia encontrado um lugar que podia chamar de lar.</strong></p>
+                        </div>
                     </div>
                     <button class="btn-proximo" onclick="abrirCapitulo('capitulo4')">Próximo Capítulo →</button>
                 </div>
@@ -717,7 +1124,11 @@
                     <div class="texto">
                         <p>Os anos passaram quase sem que Maré percebesse. Aos vinte e um anos, já era conhecido por praticamente todos os moradores da pequena ilha onde a Igreja da Maré do Primeiro Lar havia sido construída. Nunca ocupou um cargo importante dentro da religião, nunca desejou ser lembrado como sacerdote ou líder. Preferia permanecer entre as pessoas comuns, ajudando na cozinha, consertando telhados, carregando caixas de mantimentos ou acompanhando os pescadores ao amanhecer.</p>
                         <p>Todos o conheciam pelo mesmo motivo.</p>
-                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">Sua bondade.</p>
+
+                        <div class="citacao-destaque" style="font-size: 1.3rem; color: #66cc99;">
+                            <p><strong>Sua bondade.</strong></p>
+                        </div>
+
                         <p>Sempre que alguém precisava de ajuda, Maré estava por perto.</p>
                         <p>Com o tempo, passou a conhecer pessoas de outras religiões. Alguns seguiam antigos deuses, outros veneravam diferentes Signos e havia até aqueles que não acreditavam em nada. Para ele, isso jamais fez diferença. Sentava-se à mesa com qualquer um, compartilhava uma refeição, ouvia histórias e ria como se todos já fossem velhos amigos.</p>
                         <p>Mas o mundo mudava.</p>
@@ -736,24 +1147,48 @@
                         <p>Outros desejavam vingança.</p>
                         <p>Maré permaneceu em silêncio durante toda a reunião.</p>
                         <p>Quando finalmente falou, sua voz era calma.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Se respondermos ao ódio com mais ódio... ninguém vence.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Se respondermos ao ódio com mais ódio... ninguém vence.</p>
+                        </div>
+
                         <p>Alguns concordaram.</p>
                         <p>Outros o chamaram de ingênuo.</p>
                         <p>Na manhã seguinte, sem dizer a ninguém para onde iria, Maré vestiu uma camisa simples e começou a prender pequenos broches sobre o tecido. Cada um representava uma religião diferente que havia conhecido ao longo da vida. Não importava qual era o símbolo. Importava o significado. Todos pertenciam a alguém.</p>
                         <p>Alice o encontrou terminando de ajeitar a roupa.</p>
                         <p>Seu olhar imediatamente se encheu de preocupação.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Maré... o que você está fazendo?</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Maré... o que você está fazendo?</p>
+                        </div>
+
                         <p>Ele sorriu como sempre fazia.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Indo ajudar.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Lá fora ainda estão lutando.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Eu sei.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Eles podem matar você.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Indo ajudar.</p>
+                            <p>— Lá fora ainda estão lutando.</p>
+                            <p>— Eu sei.</p>
+                            <p>— Eles podem matar você.</p>
+                        </div>
+
                         <p>Maré abaixou os olhos por alguns segundos.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Então espero conseguir salvar alguém antes disso.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Então espero conseguir salvar alguém antes disso.</p>
+                        </div>
+
                         <p>Alice segurou seu braço.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Fica aqui...</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Fica aqui...</p>
+                        </div>
+
                         <p>Ele olhou para ela com carinho.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Se eu disser que acredito em acolher qualquer pessoa, mas só ajudar quem pensa como eu... então tudo o que aprendi aqui perdeu o sentido.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Se eu disser que acredito em acolher qualquer pessoa, mas só ajudar quem pensa como eu... então tudo o que aprendi aqui perdeu o sentido.</p>
+                        </div>
+
                         <p>Sem levar qualquer arma consigo, Maré partiu carregando apenas uma mochila cheia de bandagens, ervas medicinais e remédios.</p>
                         <p>Durante dias percorreu campos de batalha.</p>
                         <p>Não perguntava o nome.</p>
@@ -793,30 +1228,65 @@
                         <p>Sentou-se lentamente diante dela, como fazia todas as tardes.</p>
                         <p>Respirou fundo.</p>
                         <p>E começou a conversar.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Oi...</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Oi...</p>
+                        </div>
+
                         <p>Sua voz saiu fraca.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Faz tempo que a gente não conversa direito.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Faz tempo que a gente não conversa direito.</p>
+                        </div>
+
                         <p>Olhou para o céu.</p>
                         <p>O vento trazia novamente o cheiro do mar.</p>
                         <p>O mesmo cheiro que o acompanhara desde a infância.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Acho que... hoje eu ajudei bastante gente.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Acho que... hoje eu ajudei bastante gente.</p>
+                        </div>
+
                         <p>Um pequeno sorriso apareceu em seu rosto.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Espero que eles consigam voltar para casa.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Espero que eles consigam voltar para casa.</p>
+                        </div>
+
                         <p>Fez silêncio.</p>
                         <p>Depois apoiou a testa contra a pedra fria da estátua e a abraçou.</p>
                         <p>Como se abraçasse um velho amigo.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Obrigado...</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Obrigado...</p>
+                        </div>
+
                         <p>Outra pausa.</p>
                         <p>Quase um sussurro.</p>
-                        <p style="text-align: center; color: #66cc99; font-style: italic;">— Obrigado... por ter me dado um lar.</p>
+
+                        <div class="citacao-destaque">
+                            <p>— Obrigado... por ter me dado um lar.</p>
+                        </div>
+
                         <p>Seus olhos começaram a se fechar.</p>
                         <p>Pela última vez, ouviu o som das ondas quebrando contra a costa.</p>
                         <p>Sentiu a brisa tocar seu rosto.</p>
-                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">E partiu em paz.</p>
+
+                        <div class="citacao-destaque" style="font-size: 1.3rem; color: #88ddbb;">
+                            <p><strong>E partiu em paz.</strong></p>
+                        </div>
+
                         <p>Dizem que, naquela noite, dezenas de caranguejos apareceram entre as ruínas da igreja. Nenhum deles tocou o corpo de Maré. Apenas permaneceram ao seu redor até o amanhecer, como guardiões silenciosos daquele homem que jamais aprenderam a chamar de santo...</p>
-                        <p style="text-align: center; color: #66cc99; font-size: 1.2rem; font-style: italic;">Porque, para eles, bastava chamá-lo de amigo.</p>
+
+                        <div class="citacao-destaque" style="font-size: 1.2rem; color: #66cc99;">
+                            <p><strong>Porque, para eles, bastava chamá-lo de amigo.</strong></p>
+                        </div>
+
                         <p>E, muito tempo depois, quando alguém perguntava quem havia sido Maré, a resposta nunca falava sobre batalhas, navios ou religiões. Diziam apenas que ele era um homem que acreditava que ninguém deveria enfrentar o mundo sozinho.</p>
-                        <p style="text-align: center; color: #66cc99; font-size: 1.3rem; margin-top: 1rem; font-style: italic;">E talvez fosse exatamente isso que significava encontrar um verdadeiro lar.</p>
+
+                        <div class="citacao-destaque" style="font-size: 1.3rem; color: #88ddbb; border: none;">
+                            <p><strong>E talvez fosse exatamente isso que significava encontrar um verdadeiro lar.</strong></p>
+                        </div>
                     </div>
                     <button class="btn-proximo fim">✦ Fim da história ✦</button>
                 </div>
@@ -930,7 +1400,23 @@
         drawStars();
 
         // ============================================================
-        // MÚSICA DE FUNDO (GERAL)
+        // BOLHAS
+        // ============================================================
+        const bolhasContainer = document.getElementById('bolhas-container');
+        for (let i = 0; i < 15; i++) {
+            const bolha = document.createElement('div');
+            bolha.className = 'bolha';
+            const size = 10 + Math.random() * 30;
+            bolha.style.width = size + 'px';
+            bolha.style.height = size + 'px';
+            bolha.style.left = Math.random() * 100 + '%';
+            bolha.style.animationDelay = Math.random() * 15 + 's';
+            bolha.style.animationDuration = 12 + Math.random() * 10 + 's';
+            bolhasContainer.appendChild(bolha);
+        }
+
+        // ============================================================
+        // MÚSICA DE FUNDO
         // ============================================================
         const musicBtn = document.getElementById('musicBtn');
         let audioFundo = null;
@@ -970,7 +1456,7 @@
         }, { once: true });
 
         // ============================================================
-        // MÚSICA DO CÂNCER (MARÉ) — CORRIGIDA
+        // MÚSICA DO CÂNCER (MARÉ)
         // ============================================================
         const btnCancerMusic = document.getElementById('btnCancerMusic');
         let audioCancer = null;
@@ -1006,15 +1492,12 @@
                 audioInicializado = true;
                 console.log('🎵 Player de música do Câncer carregado.');
 
-                // PAUSA A MÚSICA DE FUNDO
                 if (audioFundo && isPlayingFundo) {
                     audioFundo.pause();
                     isPlayingFundo = false;
                     musicBtn.textContent = '🔇';
-                    console.log('🔇 Música de fundo pausada.');
                 }
 
-                // TOCA A MÚSICA DO CÂNCER
                 audioCancer.play()
                     .then(() => {
                         isPlayingCancer = true;
@@ -1037,12 +1520,10 @@
             }
         }
 
-        // Tenta iniciar automaticamente quando a página carrega
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(iniciarMusicaCancer, 600);
         });
 
-        // Fallback: se o navegador bloquear, tenta no primeiro clique
         document.addEventListener('click', function iniciarPorClique() {
             if (!audioInicializado) {
                 iniciarMusicaCancer();
@@ -1050,7 +1531,6 @@
             document.removeEventListener('click', iniciarPorClique);
         }, { once: true });
 
-        // Controle do botão
         if (btnCancerMusic) {
             btnCancerMusic.addEventListener('click', function() {
                 if (!audioInicializado) {
@@ -1068,7 +1548,6 @@
                         audioFundo.play().catch(() => {});
                         isPlayingFundo = true;
                         musicBtn.textContent = '🔊';
-                        console.log('🔊 Música de fundo retomada.');
                     }
                     return;
                 }
@@ -1077,7 +1556,6 @@
                     audioFundo.pause();
                     isPlayingFundo = false;
                     musicBtn.textContent = '🔇';
-                    console.log('🔇 Música de fundo pausada.');
                 }
 
                 audioCancer.play()
@@ -1085,7 +1563,6 @@
                         isPlayingCancer = true;
                         btnCancerMusic.textContent = '⏹️ Parar música';
                         btnCancerMusic.classList.add('playing');
-                        console.log('🎵 Música de Maré tocando.');
                     })
                     .catch((err) => {
                         console.error('Erro ao tocar:', err);
@@ -1144,7 +1621,7 @@
         console.log('🦀 Câncer — Maré carregado.');
         console.log('🎵 Música de Maré disponível em: cancer-music.mp3');
         console.log('🎵 A música vai tocar automaticamente ao entrar na página!');
+        console.log('🌊 Oceano noturno com ondas e bolhas ativado!');
     </script>
 </body>
 </html>
-
