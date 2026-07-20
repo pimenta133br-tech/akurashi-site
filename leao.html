@@ -630,44 +630,141 @@
             text-shadow: 0 0 20px rgba(255, 100, 20, 0.1);
         }
 
-        /* ===== BOTÕES ===== */
+        /* ============================================================
+           BOTÕES INTERATIVOS - PRÓXIMO CAPÍTULO
+        ============================================================ */
         .btn-proximo {
             display: inline-block;
             margin-top: 1.5rem;
-            padding: 0.7rem 2.5rem;
-            background: rgba(255, 100, 20, 0.06);
-            border: 1px solid rgba(255, 100, 20, 0.12);
-            border-radius: 50px;
-            color: #c4b8a0;
+            padding: 0.9rem 2.8rem;
             font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            text-decoration: none;
             border: none;
-            letter-spacing: 0.05em;
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            color: #f0e6d0;
+            background: linear-gradient(135deg, rgba(255, 100, 20, 0.15), rgba(255, 50, 10, 0.05));
+            border: 1px solid rgba(255, 100, 20, 0.2);
+            box-shadow: 0 4px 20px rgba(255, 100, 20, 0.05);
+            text-decoration: none;
+        }
+
+        .btn-proximo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 150, 50, 0.2), transparent);
+            transition: left 0.8s ease;
+            pointer-events: none;
         }
 
         .btn-proximo:hover {
-            background: rgba(255, 100, 20, 0.12);
+            transform: translateY(-3px) scale(1.02);
             border-color: #ff6a00;
-            color: #f0e6d0;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 100, 20, 0.08);
+            box-shadow: 
+                0 8px 40px rgba(255, 100, 20, 0.25),
+                inset 0 0 30px rgba(255, 100, 20, 0.05);
+            background: linear-gradient(135deg, rgba(255, 100, 20, 0.25), rgba(255, 50, 10, 0.1));
+            color: #fff;
         }
 
-        .btn-proximo.fim {
-            opacity: 0.5;
-            cursor: default;
+        .btn-proximo:hover::before {
+            left: 100%;
         }
-        .btn-proximo.fim:hover {
-            background: rgba(255, 100, 20, 0.06);
-            border-color: rgba(255, 100, 20, 0.12);
-            color: #c4b8a0;
-            transform: none;
+
+        .btn-proximo:active {
+            transform: scale(0.95) translateY(0);
+            box-shadow: 0 2px 10px rgba(255, 100, 20, 0.15);
+        }
+
+        /* ===== EFEITO DE FOGO NO BOTÃO ===== */
+        .btn-proximo .fogo-texto {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .btn-proximo .fogo-texto .icone {
+            display: inline-block;
+            transition: transform 0.5s ease;
+        }
+
+        .btn-proximo:hover .fogo-texto .icone {
+            transform: translateX(6px) scale(1.2);
+        }
+
+        /* ===== PARTÍCULAS DO BOTÃO ===== */
+        .btn-proximo .particula-botao {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 200, 100, 0.8), rgba(255, 80, 20, 0));
+            pointer-events: none;
+            opacity: 0;
+            width: 4px;
+            height: 4px;
+            z-index: 1;
+        }
+
+        .btn-proximo:hover .particula-botao {
+            animation: explodirParticula 1s ease-out forwards;
+        }
+
+        @keyframes explodirParticula {
+            0% {
+                opacity: 0;
+                transform: translate(0, 0) scale(0);
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(2);
+            }
+        }
+
+        /* ===== BOTÃO FIM DA HISTÓRIA ===== */
+        .btn-proximo.fim {
+            opacity: 0.6;
+            cursor: default;
+            background: rgba(255, 100, 20, 0.04);
+            border-color: rgba(255, 100, 20, 0.06);
             box-shadow: none;
         }
 
+        .btn-proximo.fim:hover {
+            transform: none;
+            background: rgba(255, 100, 20, 0.04);
+            border-color: rgba(255, 100, 20, 0.06);
+            color: #f0e6d0;
+            box-shadow: none;
+        }
+
+        .btn-proximo.fim::before {
+            display: none;
+        }
+
+        .btn-proximo.fim .fogo-texto .icone {
+            animation: brilhoFim 2s ease-in-out infinite;
+        }
+
+        @keyframes brilhoFim {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* ===== BOTÃO VOLTAR ===== */
         .btn-voltar {
             display: inline-block;
             margin-top: 2.5rem;
@@ -897,7 +994,12 @@
                             ✦ ⋆｡ ﾟ ☁︎｡ ⋆｡ ﾟ ☾ ﾟ ｡ ⋆ — Próximo Capítulo — ⋆｡ ﾟ ☁︎｡ ⋆｡ ﾟ ☾ ﾟ ｡ ⋆ ✦
                         </div>
                     </div>
-                    <button class="btn-proximo" onclick="abrirCapitulo('capitulo2')">Próximo Capítulo →</button>
+                    <button class="btn-proximo" onclick="abrirCapitulo('capitulo2')">
+                        <span class="fogo-texto">
+                            <span>Próximo Capítulo</span>
+                            <span class="icone">→</span>
+                        </span>
+                    </button>
                 </div>
             </div>
 
@@ -972,7 +1074,13 @@
                             ✦ ⋆｡ ﾟ ☁︎｡ ⋆｡ ﾟ ☾ ﾟ ｡ ⋆ — Fim (por enquanto) — ⋆｡ ﾟ ☁︎｡ ⋆｡ ﾟ ☾ ﾟ ｡ ⋆ ✦
                         </div>
                     </div>
-                    <button class="btn-proximo fim">✦ Fim da história ✦</button>
+                    <button class="btn-proximo fim">
+                        <span class="fogo-texto">
+                            <span class="icone">✦</span>
+                            <span>Fim da história</span>
+                            <span class="icone">✦</span>
+                        </span>
+                    </button>
                 </div>
             </div>
 
@@ -1349,8 +1457,38 @@
             }
         });
 
+        // ============================================================
+        // EFEITO DE PARTÍCULAS NOS BOTÕES
+        // ============================================================
+        document.querySelectorAll('.btn-proximo:not(.fim)').forEach(btn => {
+            btn.addEventListener('mouseenter', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                for (let i = 0; i < 8; i++) {
+                    const particula = document.createElement('span');
+                    particula.className = 'particula-botao';
+                    const angle = Math.random() * Math.PI * 2;
+                    const dist = 20 + Math.random() * 40;
+                    particula.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+                    particula.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+                    particula.style.left = (x + (Math.random() - 0.5) * 10) + 'px';
+                    particula.style.top = (y + (Math.random() - 0.5) * 10) + 'px';
+                    particula.style.width = (2 + Math.random() * 4) + 'px';
+                    particula.style.height = particula.style.width;
+                    particula.style.animationDuration = (0.6 + Math.random() * 0.6) + 's';
+                    this.appendChild(particula);
+
+                    setTimeout(() => {
+                        particula.remove();
+                    }, 1500);
+                }
+            });
+        });
+
         console.log('🔥 Quintana — Fogo & Leão — página carregada.');
-        console.log('🔥 Link direto para a constelação de Leão na página inicial!');
+        console.log('🔥 Botões interativos com efeitos de fogo!');
     </script>
 </body>
 </html>
